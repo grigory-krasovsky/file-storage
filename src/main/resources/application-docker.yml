@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: file-storage
+  datasource:
+    url: jdbc:postgresql://db:5432/file-storage
+    username: admin
+    password: admin
+    driver-class-name: org.postgresql.Driver
+    jpa:
+      hibernate:
+        ddl-auto: validate
+        show-sql: true
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.PostgreSQLDialect
+          format_sql: true
+
+  flyway:
+    url: jdbc:postgresql://db:5432/file-storage
+    user: admin
+    password: admin
+    locations: classpath:db/migration
+    baseline-on-migrate: true # Creates flyway_schema_history if missing
+    clean-disabled: true # Prevents accidental database wipes
