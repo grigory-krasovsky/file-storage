@@ -1,8 +1,9 @@
-package com.filestorage.core.service;
+package com.filestorage.core.service.impl;
 
-import com.filestorage.adapter.dto.FileMetadataConverter;
+import com.filestorage.adapter.dto.converter.FileMetadataConverter;
 import com.filestorage.adapter.dto.FileMetadataDTO;
-import com.filestorage.core.repository.FileMetadataRepository;
+import com.filestorage.domain.repository.FileMetadataRepository;
+import com.filestorage.core.service.FileMetadataService;
 import com.filestorage.domain.FileMetadata;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.filestorage.core.repository;
+package com.filestorage.domain.repository;
 
 import com.filestorage.domain.FileLocation;
 import org.springframework.data.jpa.repository.JpaRepository;

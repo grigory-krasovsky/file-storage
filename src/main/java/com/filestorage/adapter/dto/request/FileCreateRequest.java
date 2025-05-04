@@ -1,4 +1,4 @@
-package com.filestorage.adapter.request;
+package com.filestorage.adapter.dto.request;
 
 import com.filestorage.adapter.dto.FileLocationDTO;
 import com.filestorage.adapter.dto.FileMetadataDTO;

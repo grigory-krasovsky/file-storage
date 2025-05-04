@@ -1,8 +1,9 @@
-package com.filestorage.core.service;
+package com.filestorage.core.service.impl;
 
-import com.filestorage.adapter.dto.FileLocationConverter;
+import com.filestorage.adapter.dto.converter.FileLocationConverter;
 import com.filestorage.adapter.dto.FileLocationDTO;
-import com.filestorage.core.repository.FileLocationRepository;
+import com.filestorage.domain.repository.FileLocationRepository;
+import com.filestorage.core.service.FileLocationService;
 import com.filestorage.domain.FileLocation;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.filestorage.adapter.response;
+package com.filestorage.adapter.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;

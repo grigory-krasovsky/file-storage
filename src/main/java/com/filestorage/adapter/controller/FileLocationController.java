@@ -1,13 +1,9 @@
 package com.filestorage.adapter.controller;
 
-import com.filestorage.adapter.dto.FileLocationDTO;
-import com.filestorage.adapter.request.FileCreateRequest;
-import com.filestorage.adapter.response.FileLocationResponse;
-import com.filestorage.core.service.CRUDService;
+import com.filestorage.adapter.dto.request.FileCreateRequest;
+import com.filestorage.adapter.dto.response.FileLocationResponse;
 import com.filestorage.core.service.FileCreator;
-import com.filestorage.domain.FileLocation;
 import lombok.AllArgsConstructor;
-import lombok.NonNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 

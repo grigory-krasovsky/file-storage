@@ -1,5 +1,6 @@
-package com.filestorage.adapter.dto;
+package com.filestorage.adapter.dto.converter;
 
+import com.filestorage.adapter.dto.FileMetadataDTO;
 import com.filestorage.domain.FileLocation;
 import com.filestorage.domain.FileMetadata;
 import lombok.AllArgsConstructor;

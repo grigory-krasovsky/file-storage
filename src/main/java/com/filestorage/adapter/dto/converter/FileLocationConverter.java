@@ -1,5 +1,6 @@
-package com.filestorage.adapter.dto;
+package com.filestorage.adapter.dto.converter;
 
+import com.filestorage.adapter.dto.FileLocationDTO;
 import com.filestorage.domain.FileLocation;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
