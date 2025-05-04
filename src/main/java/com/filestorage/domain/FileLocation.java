@@ -8,17 +8,11 @@ import lombok.experimental.SuperBuilder;
 import java.time.OffsetDateTime;
 
 @Entity
-@Table(name = "file_location")
-@SuperBuilder
 @Getter
 @Setter
+@SuperBuilder
+@NoArgsConstructor
+@Table(name = "file_location")
 public class FileLocation extends AbstractEntity {
-
     String filePath;
-    @NonNull
-    OffsetDateTime createdAt;
-
-    public FileLocation() {
-        super();
-    }
 }

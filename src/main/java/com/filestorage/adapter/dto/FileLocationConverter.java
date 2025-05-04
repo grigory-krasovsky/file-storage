@@ -1,12 +1,13 @@
 package com.filestorage.adapter.dto;
 
 import com.filestorage.domain.FileLocation;
+import lombok.NonNull;
 import org.springframework.stereotype.Service;
 
 @Service
 public class FileLocationConverter implements Converter<FileLocation, FileLocationDTO> {
     @Override
-    public FileLocation toEntity(FileLocationDTO fileLocationDTO) {
+    public @NonNull FileLocation toEntity(FileLocationDTO fileLocationDTO) {
         return FileLocation.builder()
                 .filePath(fileLocationDTO.getFilePath())
                 .id(fileLocationDTO.getId())
@@ -14,7 +15,7 @@ public class FileLocationConverter implements Converter<FileLocation, FileLocati
                 .build();
     }
     @Override
-    public FileLocationDTO toDto(FileLocation fileLocation) {
+    public @NonNull FileLocationDTO toDto(FileLocation fileLocation) {
         return FileLocationDTO.builder()
                 .id(fileLocation.getId())
                 .createdAt(fileLocation.getCreatedAt())

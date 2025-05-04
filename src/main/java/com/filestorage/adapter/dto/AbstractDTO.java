@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Data
@@ -12,5 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor  // ← Required for Jackson
 @AllArgsConstructor // ← Optional but useful
 public class AbstractDTO {
-    UUID id;
+    private UUID id;
+    private OffsetDateTime createdAt;
+
 }

@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Data
@@ -16,4 +17,5 @@ public abstract class AbstractEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(columnDefinition = "UUID DEFAULT gen_random_uuid()")
     UUID id;
+    OffsetDateTime createdAt;
 }

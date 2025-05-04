@@ -13,6 +13,11 @@ import java.time.OffsetDateTime;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FileLocationDTO extends AbstractDTO {
-    private String filePath;
+public class FileMetadataDTO extends AbstractDTO {
+
+    FileLocationDTO fileLocationDTO;
+    String author;
+    String comment;
+
+    OffsetDateTime fileDateTime;
 }
