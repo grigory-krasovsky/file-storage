@@ -10,9 +10,17 @@ import java.util.UUID;
 public class FileLocationResponse {
     private UUID fileLocationUUID;
     private FileMetadataResponse fileMetadataResponse;
+    private FileUploadStatusResponse fileUploadStatusResponse;
+
     @Getter
     @Builder
     public static class FileMetadataResponse {
         private UUID fileMetadataUUID;
+    }
+
+    @Getter
+    @Builder
+    public static class FileUploadStatusResponse {
+        private UUID fileUploadStatusUUID;
     }
 }

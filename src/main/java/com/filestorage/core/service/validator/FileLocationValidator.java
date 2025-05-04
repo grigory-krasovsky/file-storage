@@ -10,8 +10,6 @@ public class FileLocationValidator implements EntityValidator<FileLocation> {
 
     @Override
     public void correct(FileLocation entity) {
-        if (entity.getCreatedAt() == null) {
-            entity.setCreatedAt(OffsetDateTime.now());
-        }
+        correctCreatedAt(entity);
     }
 }

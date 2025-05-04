@@ -10,8 +10,6 @@ public class FileMetadataValidator implements EntityValidator<FileMetadata> {
 
     @Override
     public void correct(FileMetadata entity) {
-        if (entity.getCreatedAt() == null) {
-            entity.setCreatedAt(OffsetDateTime.now());
-        }
+        correctCreatedAt(entity);
     }
 }

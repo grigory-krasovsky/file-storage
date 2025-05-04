@@ -21,7 +21,6 @@ import java.time.OffsetDateTime;
 public class FileMetadata extends AbstractEntity {
 
     @OneToOne
-    @JoinColumn
     @NonNull
     FileLocation fileLocation;
 

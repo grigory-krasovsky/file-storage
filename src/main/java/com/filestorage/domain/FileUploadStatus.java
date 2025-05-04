@@ -1,9 +1,7 @@
 package com.filestorage.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import com.filestorage.domain.enums.UploadStatus;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -15,10 +13,17 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @SuperBuilder
 @NoArgsConstructor
-@Table(name = "file_metadata")
+@Table(name = "file_upload_status")
 public class FileUploadStatus extends AbstractEntity {
     @OneToOne
-    @JoinColumn
     @NonNull
     FileLocation fileLocation;
+
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "TEXT")
+    @NonNull
+    private UploadStatus status;
+
+    @Column(name = "stack_trace")
+    private String stacktrace;
 }
