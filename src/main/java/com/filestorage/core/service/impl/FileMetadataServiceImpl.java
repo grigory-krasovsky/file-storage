@@ -1,42 +1,17 @@
 package com.filestorage.core.service.impl;
 
-import com.filestorage.adapter.dto.converter.FileMetadataConverter;
-import com.filestorage.adapter.dto.FileMetadataDTO;
-import com.filestorage.domain.repository.FileMetadataRepository;
 import com.filestorage.core.service.FileMetadataService;
+import com.filestorage.core.service.validator.FileMetadataValidator;
 import com.filestorage.domain.FileMetadata;
-import lombok.AllArgsConstructor;
+import com.filestorage.domain.repository.FileMetadataRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-import java.util.UUID;
-
 @Service
-@AllArgsConstructor
-public class FileMetadataServiceImpl implements FileMetadataService {
+public class FileMetadataServiceImpl extends AbstractEntityService<FileMetadata, FileMetadataValidator, FileMetadataRepository>
+        implements FileMetadataService {
 
-    private final FileMetadataRepository repository;
-    private final FileMetadataConverter converter;
-
-    @Override
-    public UUID create(FileMetadataDTO dto) {
-        FileMetadata fileMetadata = converter.toEntity(dto);
-        return repository.save(fileMetadata).getId();
-    }
-
-    @Override
-    public Optional<FileMetadataDTO> findById(UUID uuid) {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<FileMetadataDTO> update(FileMetadataDTO dto) {
-        return Optional.empty();
-    }
-
-    @Override
-    public Boolean delete(UUID uuid) {
-        return null;
+    public FileMetadataServiceImpl(FileMetadataValidator validator, FileMetadataRepository repository) {
+        super(validator, repository);
     }
 
 }

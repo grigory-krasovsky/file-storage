@@ -1,49 +1,23 @@
 package com.filestorage.core.service.impl;
 
-import com.filestorage.adapter.dto.converter.FileLocationConverter;
-import com.filestorage.adapter.dto.FileLocationDTO;
-import com.filestorage.domain.repository.FileLocationRepository;
 import com.filestorage.core.service.FileLocationService;
+import com.filestorage.core.service.validator.FileLocationValidator;
 import com.filestorage.domain.FileLocation;
+import com.filestorage.domain.repository.FileLocationRepository;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.OffsetDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
-@AllArgsConstructor
-public class FileLocationServiceImpl implements FileLocationService {
+public class FileLocationServiceImpl extends AbstractEntityService<FileLocation, FileLocationValidator, FileLocationRepository>
+        implements FileLocationService {
 
-    FileLocationRepository repository;
-    FileLocationConverter converter;
-
-    //todo probably add additional actions like saving other corresponding entities
-    @Override
-    public UUID create(FileLocationDTO dto) {
-        FileLocation fileLocation = converter.toEntity(dto);
-        //todo move to validator
-        if (fileLocation.getCreatedAt() == null) {
-            fileLocation.setCreatedAt(OffsetDateTime.now());
-        }
-
-        return repository.save(fileLocation).getId();
-    }
-
-    @Override
-    public Optional<FileLocationDTO> findById(UUID uuid) {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<FileLocationDTO> update(FileLocationDTO dto) {
-        return Optional.empty();
-    }
-
-    @Override
-    public Boolean delete(UUID uuid) {
-        return null;
+    public FileLocationServiceImpl(FileLocationValidator validator, FileLocationRepository repository) {
+        super(validator, repository);
     }
 
 }

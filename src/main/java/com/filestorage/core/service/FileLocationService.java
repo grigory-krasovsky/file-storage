@@ -4,6 +4,6 @@ import com.filestorage.adapter.dto.FileLocationDTO;
 import com.filestorage.domain.FileLocation;
 
 
-public interface FileLocationService extends CRUDService<FileLocation, FileLocationDTO> {
+public interface FileLocationService extends CRUDService<FileLocation> {
 
 }

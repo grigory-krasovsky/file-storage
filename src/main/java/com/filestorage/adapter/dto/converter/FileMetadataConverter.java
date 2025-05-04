@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 @AllArgsConstructor
 public class FileMetadataConverter implements Converter<FileMetadata, FileMetadataDTO> {
@@ -28,6 +30,14 @@ public class FileMetadataConverter implements Converter<FileMetadata, FileMetada
                 )
                 .build();
     }
+
+    @Override
+    public FileMetadata toReferenceEntity(UUID id) {
+        return FileMetadata.builder()
+                .id(id)
+                .build();
+    }
+
     @Override
     public @NonNull FileMetadataDTO toDto(FileMetadata fileMetadata) {
         return FileMetadataDTO.builder()

@@ -5,6 +5,8 @@ import com.filestorage.domain.FileLocation;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class FileLocationConverter implements Converter<FileLocation, FileLocationDTO> {
     @Override
@@ -15,6 +17,14 @@ public class FileLocationConverter implements Converter<FileLocation, FileLocati
                 .createdAt(fileLocationDTO.getCreatedAt())
                 .build();
     }
+
+    @Override
+    public FileLocation toReferenceEntity(UUID id) {
+        return FileLocation.builder()
+                .id(id)
+                .build();
+    }
+
     @Override
     public @NonNull FileLocationDTO toDto(FileLocation fileLocation) {
         return FileLocationDTO.builder()

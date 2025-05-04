@@ -6,9 +6,9 @@ import com.filestorage.domain.AbstractEntity;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface CRUDService<E extends AbstractEntity, D extends AbstractDTO> {
-    UUID create(D dto);
-    Optional<D> findById(UUID uuid);
-    Optional<D> update(D dto);
+public interface CRUDService<E extends AbstractEntity> {
+    E create(E entity);
+    Optional<E> findById(UUID uuid);
+    Optional<E> update(E entity);
     Boolean delete(UUID uuid);
 }
