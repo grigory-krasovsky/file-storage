@@ -4,19 +4,16 @@ import com.filestorage.adapter.dto.converter.FileLocationConverter;
 import com.filestorage.adapter.dto.converter.FileMetadataConverter;
 import com.filestorage.adapter.dto.request.FileCreateRequest;
 import com.filestorage.adapter.dto.response.FileLocationResponse;
-import com.filestorage.core.exception.FileUploadException;
-import com.filestorage.core.exception.enums.ErrorType;
 import com.filestorage.core.service.FileCreator;
 import com.filestorage.core.service.FileLocationService;
 import com.filestorage.core.service.FileMetadataService;
-import com.filestorage.core.service.FileUploadStatusService;
+import com.filestorage.core.service.FileStatusService;
 import com.filestorage.domain.FileLocation;
 import com.filestorage.domain.FileMetadata;
-import com.filestorage.domain.FileUploadStatus;
-import com.filestorage.domain.enums.UploadStatus;
+import com.filestorage.domain.FileStatus;
+import com.filestorage.domain.enums.FileStatusType;
 
 import lombok.AllArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -29,7 +26,7 @@ public class FileCreatorImpl implements FileCreator {
 
     private final FileLocationService fileLocationService;
     private final FileMetadataService fileMetadataService;
-    private final FileUploadStatusService fileUploadStatusService;
+    private final FileStatusService fileStatusService;
     private final FileLocationConverter fileLocationConverter;
     private final FileMetadataConverter fileMetadataConverter;
     private final TransactionTemplate transactionTemplate;
@@ -44,11 +41,11 @@ public class FileCreatorImpl implements FileCreator {
         fileMetadata.setFileLocation(savedFileLocation);
 
         FileMetadata savedFileMetadata = fileMetadataService.create(fileMetadata);
-        FileUploadStatus savedFileUploadStatus = fileUploadStatusService.create(FileUploadStatus
+        FileStatus savedFileStatus = fileStatusService.create(FileStatus
                 .builder()
                 .createdAt(OffsetDateTime.now())
                 .fileLocation(savedFileLocation)
-                .status(UploadStatus.UPLOAD_STARTED)
+                .status(FileStatusType.UPLOAD_STARTED)
                 .build());
 
         return FileLocationResponse
@@ -59,10 +56,10 @@ public class FileCreatorImpl implements FileCreator {
                                 .builder()
                                 .fileMetadataUUID(savedFileMetadata.getId())
                                 .build())
-                .fileUploadStatusResponse(
-                        FileLocationResponse.FileUploadStatusResponse
+                .fileStatusResponse(
+                        FileLocationResponse.FileStatusResponse
                                 .builder()
-                                .fileUploadStatusUUID(savedFileUploadStatus.getId())
+                                .fileUploadStatusUUID(savedFileStatus.getId())
                                 .build()
                 ).build();
     }

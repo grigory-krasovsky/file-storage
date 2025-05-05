@@ -4,10 +4,10 @@ import com.filestorage.adapter.dto.response.ErrorResponse;
 import com.filestorage.core.exception.FileStorageException;
 import com.filestorage.core.exception.FileUploadException;
 import com.filestorage.core.service.ErrorLogService;
-import com.filestorage.core.service.FileUploadStatusService;
+import com.filestorage.core.service.FileStatusService;
 import com.filestorage.domain.ErrorLog;
-import com.filestorage.domain.FileUploadStatus;
-import com.filestorage.domain.enums.UploadStatus;
+import com.filestorage.domain.FileStatus;
+import com.filestorage.domain.enums.FileStatusType;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,16 +20,16 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
     private final ErrorLogService errorLogService;
-    private final FileUploadStatusService fileUploadStatusService;
+    private final FileStatusService fileStatusService;
 
     @ExceptionHandler(FileStorageException.class)
     public ResponseEntity<ErrorResponse> handleFileStorageException(FileStorageException ex, HttpServletRequest request) {
         String stacktrace = Arrays.toString(ex.getStackTrace());
         if (ex.shouldLogToDatabase()) {
             if (ex instanceof FileUploadException) {
-                fileUploadStatusService.create(FileUploadStatus
+                fileStatusService.create(FileStatus
                         .builder()
-                        .status(UploadStatus.ERROR)
+                        .status(FileStatusType.UPLOAD_ERROR)
                         .stacktrace(stacktrace)
                         .build());
             }

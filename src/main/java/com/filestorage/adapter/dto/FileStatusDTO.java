@@ -1,6 +1,6 @@
 package com.filestorage.adapter.dto;
 
-import com.filestorage.domain.enums.UploadStatus;
+import com.filestorage.domain.enums.FileStatusType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,9 +12,9 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FileUpdateStatusDTO extends AbstractDTO {
+public class FileStatusDTO extends AbstractDTO {
 
     FileLocationDTO fileLocationDTO;
-    UploadStatus uploadStatus;
+    FileStatusType fileStatusType;
     String stacktrace;
 }

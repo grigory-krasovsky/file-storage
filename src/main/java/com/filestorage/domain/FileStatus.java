@@ -1,6 +1,6 @@
 package com.filestorage.domain;
 
-import com.filestorage.domain.enums.UploadStatus;
+import com.filestorage.domain.enums.FileStatusType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,8 +13,8 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @SuperBuilder
 @NoArgsConstructor
-@Table(name = "file_upload_status")
-public class FileUploadStatus extends AbstractEntity {
+@Table(name = "file_status")
+public class FileStatus extends AbstractEntity {
     @OneToOne
     @NonNull
     FileLocation fileLocation;
@@ -22,7 +22,7 @@ public class FileUploadStatus extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "TEXT")
     @NonNull
-    private UploadStatus status;
+    private FileStatusType status;
 
     @Column(name = "stack_trace")
     private String stacktrace;
