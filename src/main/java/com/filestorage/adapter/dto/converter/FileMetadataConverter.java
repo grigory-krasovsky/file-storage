@@ -1,8 +1,8 @@
 package com.filestorage.adapter.dto.converter;
 
 import com.filestorage.adapter.dto.FileMetadataDTO;
-import com.filestorage.domain.FileLocation;
-import com.filestorage.domain.FileMetadata;
+import com.filestorage.domain.entity.FileLocation;
+import com.filestorage.domain.entity.FileMetadata;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;

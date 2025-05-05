@@ -1,6 +1,6 @@
 package com.filestorage.core.service.validator;
 
-import com.filestorage.domain.FileStatus;
+import com.filestorage.domain.entity.FileStatus;
 import org.springframework.stereotype.Service;
 
 @Service

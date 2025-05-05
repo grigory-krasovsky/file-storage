@@ -2,7 +2,7 @@ package com.filestorage.core.service.impl;
 
 import com.filestorage.core.service.CRUDService;
 import com.filestorage.core.service.validator.EntityValidator;
-import com.filestorage.domain.AbstractEntity;
+import com.filestorage.domain.entity.AbstractEntity;
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 

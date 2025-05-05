@@ -1,7 +1,6 @@
 package com.filestorage.core.service;
 
-import com.filestorage.adapter.dto.AbstractDTO;
-import com.filestorage.domain.AbstractEntity;
+import com.filestorage.domain.entity.AbstractEntity;
 
 import java.util.Optional;
 import java.util.UUID;

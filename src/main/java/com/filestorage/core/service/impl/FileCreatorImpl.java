@@ -8,9 +8,9 @@ import com.filestorage.core.service.FileCreator;
 import com.filestorage.core.service.FileLocationService;
 import com.filestorage.core.service.FileMetadataService;
 import com.filestorage.core.service.FileStatusService;
-import com.filestorage.domain.FileLocation;
-import com.filestorage.domain.FileMetadata;
-import com.filestorage.domain.FileStatus;
+import com.filestorage.domain.entity.FileLocation;
+import com.filestorage.domain.entity.FileMetadata;
+import com.filestorage.domain.entity.FileStatus;
 import com.filestorage.domain.enums.FileStatusType;
 
 import lombok.AllArgsConstructor;

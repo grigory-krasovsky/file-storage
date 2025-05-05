@@ -1,4 +1,4 @@
-package com.filestorage.domain;
+package com.filestorage.domain.entity;
 
 import com.filestorage.domain.enums.FileStatusType;
 import jakarta.persistence.*;

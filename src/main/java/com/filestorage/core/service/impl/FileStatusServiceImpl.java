@@ -2,7 +2,7 @@ package com.filestorage.core.service.impl;
 
 import com.filestorage.core.service.FileStatusService;
 import com.filestorage.core.service.validator.FileStatusValidator;
-import com.filestorage.domain.FileStatus;
+import com.filestorage.domain.entity.FileStatus;
 import com.filestorage.domain.repository.FileUploadStatusRepository;
 import org.springframework.stereotype.Service;
 

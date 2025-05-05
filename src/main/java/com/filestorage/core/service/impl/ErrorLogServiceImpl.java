@@ -2,7 +2,7 @@ package com.filestorage.core.service.impl;
 
 import com.filestorage.core.service.ErrorLogService;
 import com.filestorage.core.service.validator.ErrorValidator;
-import com.filestorage.domain.ErrorLog;
+import com.filestorage.domain.entity.ErrorLog;
 import com.filestorage.domain.repository.ErrorLogRepository;
 import org.springframework.stereotype.Service;
 

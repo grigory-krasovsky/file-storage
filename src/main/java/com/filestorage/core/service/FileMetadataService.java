@@ -1,7 +1,6 @@
 package com.filestorage.core.service;
 
-import com.filestorage.adapter.dto.FileMetadataDTO;
-import com.filestorage.domain.FileMetadata;
+import com.filestorage.domain.entity.FileMetadata;
 
 public interface FileMetadataService extends CRUDService<FileMetadata> {
 

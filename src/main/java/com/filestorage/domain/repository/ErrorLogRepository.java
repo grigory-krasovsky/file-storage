@@ -1,6 +1,6 @@
 package com.filestorage.domain.repository;
 
-import com.filestorage.domain.ErrorLog;
+import com.filestorage.domain.entity.ErrorLog;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;

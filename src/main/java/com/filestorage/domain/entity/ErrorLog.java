@@ -1,4 +1,4 @@
-package com.filestorage.domain;
+package com.filestorage.domain.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

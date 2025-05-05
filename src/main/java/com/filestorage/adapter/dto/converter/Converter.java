@@ -1,7 +1,7 @@
 package com.filestorage.adapter.dto.converter;
 
 import com.filestorage.adapter.dto.AbstractDTO;
-import com.filestorage.domain.AbstractEntity;
+import com.filestorage.domain.entity.AbstractEntity;
 import lombok.NonNull;
 
 import java.util.UUID;

@@ -1,6 +1,6 @@
 package com.filestorage.core.service.validator;
 
-import com.filestorage.domain.ErrorLog;
+import com.filestorage.domain.entity.ErrorLog;
 import org.springframework.stereotype.Service;
 
 @Service

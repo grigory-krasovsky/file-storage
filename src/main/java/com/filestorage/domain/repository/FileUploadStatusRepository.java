@@ -1,6 +1,6 @@
 package com.filestorage.domain.repository;
 
-import com.filestorage.domain.FileStatus;
+import com.filestorage.domain.entity.FileStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

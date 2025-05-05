@@ -1,9 +1,7 @@
 package com.filestorage.core.service.validator;
 
-import com.filestorage.domain.FileLocation;
+import com.filestorage.domain.entity.FileLocation;
 import org.springframework.stereotype.Service;
-
-import java.time.OffsetDateTime;
 
 @Service
 public class FileLocationValidator implements EntityValidator<FileLocation> {

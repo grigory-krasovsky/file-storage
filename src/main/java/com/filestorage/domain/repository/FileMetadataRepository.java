@@ -1,6 +1,6 @@
 package com.filestorage.domain.repository;
 
-import com.filestorage.domain.FileMetadata;
+import com.filestorage.domain.entity.FileMetadata;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

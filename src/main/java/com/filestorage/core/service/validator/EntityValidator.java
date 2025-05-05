@@ -1,6 +1,6 @@
 package com.filestorage.core.service.validator;
 
-import com.filestorage.domain.AbstractEntity;
+import com.filestorage.domain.entity.AbstractEntity;
 
 import java.time.OffsetDateTime;
 
