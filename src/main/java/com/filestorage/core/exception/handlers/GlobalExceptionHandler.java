@@ -29,12 +29,12 @@ public class GlobalExceptionHandler {
             if (ex instanceof FileUploadException) {
                 fileUploadStatusService.create(FileUploadStatus
                         .builder()
-                                .status(UploadStatus.ERROR)
-                                .stacktrace(stacktrace)
+                        .status(UploadStatus.ERROR)
+                        .stacktrace(stacktrace)
                         .build());
             }
 
-            saveErrorLog(stacktrace, request);
+            saveErrorLog(stacktrace, getClassName(ex), ex.getMessage(), request);
 
         }
 
@@ -46,17 +46,25 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleFileStorageException(Exception e, HttpServletRequest request) {
         String stacktrace = Arrays.toString(e.getStackTrace());
-        saveErrorLog(stacktrace, request);
+        String className = getClassName(e);
+        saveErrorLog(stacktrace, className, e.getMessage(), request);
         return ResponseEntity
                 .status(500)
                 .body(ErrorResponse.fromException(e, request));
     }
 
-    private void saveErrorLog(String stacktrace, HttpServletRequest request) {
+    private void saveErrorLog(String stacktrace, String className, String details, HttpServletRequest request) {
         errorLogService.create(ErrorLog
                 .builder()
                 .requestEndpoint(request.getRequestURI())
+                .serviceName(className)
                 .stackTrace(stacktrace)
+                .details(details)
                 .build());
+    }
+
+    private String getClassName(Exception e) {
+        return Arrays.stream(e.getStackTrace()).toList().stream().filter(element -> element.getClassName().contains("com.filestorage"))
+                .findFirst().map(StackTraceElement::getClassName).orElse(null);
     }
 }

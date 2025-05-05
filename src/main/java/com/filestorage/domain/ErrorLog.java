@@ -20,4 +20,5 @@ public class ErrorLog extends AbstractEntity {
 
     private String stackTrace;
     private String requestEndpoint;
+    private String details;
 }
