@@ -4,14 +4,19 @@ import com.filestorage.adapter.dto.FileLocationDTO;
 import com.filestorage.adapter.dto.FileMetadataDTO;
 import lombok.Getter;
 
+import java.time.OffsetDateTime;
+
 @Getter
-public class FileCreateRequest {
-    private final FileLocationDTO fileLocationDTO;
+public class FileLocationCreateRequest {
     private final FileMetadataDTO fileMetadataDTO;
 
-    public FileCreateRequest(FileLocationDTO fileLocationDTO, FileMetadataDTO fileMetadataDTO) {
-        this.fileLocationDTO = fileLocationDTO;
+    public FileLocationCreateRequest(FileMetadataDTO fileMetadataDTO) {
         this.fileMetadataDTO = fileMetadataDTO;
+
+        if (fileMetadataDTO.getFileDateTime() == null) {
+            fileMetadataDTO.setFileDateTime(OffsetDateTime.now());
+        }
+
         if (fileMetadataDTO.getFileLocationDTO() == null) {
             fileMetadataDTO.setFileLocationDTO(FileLocationDTO.builder().build());
         }

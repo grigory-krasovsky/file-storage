@@ -18,6 +18,5 @@ public class FileMetadataDTO extends AbstractDTO {
     FileLocationDTO fileLocationDTO;
     String author;
     String comment;
-
     OffsetDateTime fileDateTime;
 }

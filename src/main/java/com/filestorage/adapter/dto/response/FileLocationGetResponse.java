@@ -7,7 +7,7 @@ import java.util.UUID;
 
 @Getter
 @Builder
-public class FileLocationResponse {
+public class FileLocationGetResponse {
     private UUID fileLocationUUID;
     private FileMetadataResponse fileMetadataResponse;
     private FileStatusResponse fileStatusResponse;

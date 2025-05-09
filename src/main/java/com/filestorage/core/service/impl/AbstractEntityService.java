@@ -28,7 +28,7 @@ public class AbstractEntityService<E extends AbstractEntity, V extends EntityVal
 
     @Override
     public Optional<E> update(E entity) {
-        return Optional.empty();
+        return Optional.of(repository.save(entity));
     }
 
     @Override
