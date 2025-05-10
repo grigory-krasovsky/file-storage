@@ -44,8 +44,6 @@ jobs:
 
       - name: Deploy
         run: |
-          echo "vps user: $VPS_USER" 
-          echo "vps ip: $VPS_IP" 
           ssh $VPS_USER@$VPS_IP <<EOF
           docker pull $DOCKER_IMAGE
           docker compose -f /home/deploy/docker-compose.prod.yml up -d
