@@ -33,7 +33,6 @@ jobs:
 
       - name: Build and Push
         run: |
-          echo "Dicker_img: $DOCKER_IMAGE" 
           docker build -t $DOCKER_IMAGE -t iceteagreen/file-storage:latest .
           docker push $DOCKER_IMAGE
           docker push iceteagreen/file-storage:latest
@@ -45,6 +44,8 @@ jobs:
 
       - name: Deploy
         run: |
+          echo "vps user: $VPS_USER" 
+          echo "vps ip: $VPS_IP" 
           ssh $VPS_USER@$VPS_IP <<EOF
           docker pull $DOCKER_IMAGE
           docker compose -f /home/deploy/docker-compose.prod.yml up -d
