@@ -63,7 +63,6 @@ jobs:
         run: |  
           ssh -T $VPS_USER@$VPS_IP <<EOF
           docker pull $DOCKER_IMAGE
-          mkdir -p /home/file-storage/storage &&
-          chmod 775 /home/file-storage/storage &&
-          docker compose up -d
+          cd /home/file-storage
+          docker compose -f docker-compose.prod.yml up -d
           EOF

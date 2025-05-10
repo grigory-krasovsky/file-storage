@@ -40,4 +40,4 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: C:\Users\User\IdeaProjects\file-storage-docker-volume
+      device: C:\Users\User\IdeaProjects123\file-storage-docker-volume
