@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/files")
+@RequestMapping("/api/file/location")
 public class FileLocationController extends AbstractController {
 
     private final FileLocationManager fileLocationManager;

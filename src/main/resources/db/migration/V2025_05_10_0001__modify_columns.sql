@@ -1,0 +1,1 @@
+ALTER TABLE file_metadata RENAME COLUMN file_extension TO content_type;

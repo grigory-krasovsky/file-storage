@@ -8,10 +8,11 @@ import lombok.Setter;
 @Setter
 public abstract class FileStorageException extends RuntimeException {
     private final ErrorType errorType;
+    private final String message;
 
-    protected FileStorageException(ErrorType errorType) {
+    protected FileStorageException(ErrorType errorType, String message) {
         this.errorType = errorType;
+        this.message = message;
     }
 
-    public abstract boolean shouldLogToDatabase();
 }

@@ -25,6 +25,8 @@ public class FileMetadata extends AbstractEntity {
 
     String author;
     String comment;
+    String fileName;
+    String contentType;
 
     OffsetDateTime fileDateTime;
 }

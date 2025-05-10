@@ -23,12 +23,12 @@ public record ErrorResponse(
                 .build();
     }
 
-    public static ErrorResponse fromException(Exception ex, HttpServletRequest request) {
+    public static ErrorResponse fromException(String message, HttpServletRequest request) {
         return ErrorResponse
                 .builder()
                 .timestamp(OffsetDateTime.now())
                 .type(ErrorType.SYSTEM_ERROR)
-                .message(ex.getMessage())
+                .message(message)
                 .path(request.getContextPath())
                 .build();
     }

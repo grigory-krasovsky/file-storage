@@ -7,6 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum FileStatusType {
 
+    UPLOAD_READY("Ожидание загрузки"),
     UPLOAD_SUCCESS("Загрузка завершена"),
     UPLOAD_ERROR("Ошибка загрузки"),
     UPLOAD_STARTED("Загрузка началась");
