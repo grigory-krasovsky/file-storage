@@ -32,7 +32,7 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
       - name: Tag and Push
-      - uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v5
         with:
           tags: |
             $DOCKER_IMAGE
