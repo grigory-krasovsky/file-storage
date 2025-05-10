@@ -64,5 +64,6 @@ jobs:
           ssh -T $VPS_USER@$VPS_IP <<EOF
           docker pull $DOCKER_IMAGE
           cd /home/file-storage
-          docker compose -f docker-compose.prod.yml up -d
+          docker compose -f docker-compose.prod.yml down  # Remove old containers
+          docker compose -f docker-compose.prod.yml up -d --force-recreate  # Create new ones
           EOF
