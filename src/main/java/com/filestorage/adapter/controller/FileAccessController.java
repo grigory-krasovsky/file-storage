@@ -4,6 +4,7 @@ import com.filestorage.adapter.dto.request.FileAccessCreateRequest;
 import com.filestorage.core.service.FileAccessManager;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,6 +18,11 @@ import org.springframework.web.bind.annotation.*;
 public class FileAccessController extends AbstractController {
 
     FileAccessManager fileAccessManager;
+
+    @GetMapping
+    public String test() {
+        return "Hello world";
+    }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
