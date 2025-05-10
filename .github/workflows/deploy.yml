@@ -1,0 +1,50 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches: [master]
+
+env:
+  VPS_IP: ${{ secrets.VPS_IP }}
+  VPS_USER: ${{ secrets.VPS_USER }}
+  SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+  DOCKER_IMAGE: iceteagreen/file-storage:$GITHUB_SHA
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Build Java app (only needed for tests)
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - run: mvn package -DskipTests
+
+      # Docker steps
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+      - name: Build and Push
+        run: |
+          docker build -t $DOCKER_IMAGE -t iceteagreen/file-storage:latest .
+          docker push $DOCKER_IMAGE
+          docker push iceteagreen/file-storage:latest
+
+      # Deployment
+      - uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.VPS_SSH_KEY }}
+
+      - name: Deploy
+        run: |
+          ssh $VPS_USER@$VPS_IP <<EOF
+          docker pull $DOCKER_IMAGE
+          docker compose -f /home/deploy/docker-compose.prod.yml up -d
+          EOF

@@ -19,7 +19,7 @@ public class FileAccessUtils {
     }
 
     public String getDefaultRootPath() {
-        String rootPath = env.getProperty("rootPath");
+        String rootPath = env.getProperty("ROOT_PATH");
         if (rootPath != null && !rootPath.isBlank()) {
             return rootPath;
         }

@@ -13,6 +13,13 @@ RUN mvn package -DskipTests
 # Runtime stage (Lightweight JRE)
 FROM eclipse-temurin:17-jre-jammy
 WORKDIR /app
+
+# Set environment variable
+ENV ROOT_PATH=/storage
+
+# Create the directory
+RUN mkdir -p ${ROOT_PATH}
+
 COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
