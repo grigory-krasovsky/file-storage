@@ -50,6 +50,7 @@ jobs:
 
       - name: Transfer Compose File
         run: |
+          ssh -T $VPS_USER@$VPS_IP "mkdir -p /home/file-storage"
           scp -o StrictHostKeyChecking=no \
               docker-compose.prod.yml \
               $VPS_USER@$VPS_IP:/home/file-storage/
