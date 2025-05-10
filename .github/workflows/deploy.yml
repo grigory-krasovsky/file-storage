@@ -31,11 +31,13 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-      - name: Build and Push
-        run: |
-          docker build -t $DOCKER_IMAGE -t iceteagreen/file-storage:latest .
-          docker push $DOCKER_IMAGE
-          docker push iceteagreen/file-storage:latest
+      - name: Tag and Push
+      - uses: docker/build-push-action@v5
+        with:
+          tags: |
+            $DOCKER_IMAGE
+            iceteagreen/file-storage:latest
+          push: true
 
       # Deployment
       - uses: webfactory/ssh-agent@v0.7.0
