@@ -62,9 +62,8 @@ jobs:
       - name: Deploy
         run: |  
           ssh -T $VPS_USER@$VPS_IP <<EOF
-          sudo mkdir -p /home/file-storage/storage
-          sudo chown -R 1000:1000 /home/file-storage/storage  # Match container user
           docker pull $DOCKER_IMAGE
-          cd /home/file-storage
-          docker compose -f docker-compose.prod.yml up -d
+          mkdir -p /home/file-storage/storage &&
+          chmod 775 /home/file-storage/storage &&
+          docker compose up -d
           EOF

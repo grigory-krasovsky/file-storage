@@ -12,7 +12,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: admin
       ROOT_PATH: /storage
     volumes:
-      - file-storage-volume:/storage
+      - /home/file-storage/storage:/storage
     depends_on:
       db:
         condition: service_healthy
