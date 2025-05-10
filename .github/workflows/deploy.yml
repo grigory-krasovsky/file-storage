@@ -12,30 +12,30 @@ env:
 
 jobs:
   deploy:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#
-#      # Build Java app (only needed for tests)
-#      - uses: actions/setup-java@v4
-#        with:
-#          distribution: 'temurin'
-#          java-version: '17'
-#
-#      - run: mvn package -DskipTests
-#
-#      # Docker steps
-#      - name: Login to Docker Hub
-#        uses: docker/login-action@v3
-#        with:
-#          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-#          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-#
-#      - name: Build and Push
-#        run: |
-#          docker build -t $DOCKER_IMAGE -t iceteagreen/file-storage:latest .
-#          docker push $DOCKER_IMAGE
-#          docker push iceteagreen/file-storage:latest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Build Java app (only needed for tests)
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - run: mvn package -DskipTests
+
+      # Docker steps
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+      - name: Build and Push
+        run: |
+          docker build -t $DOCKER_IMAGE -t iceteagreen/file-storage:latest .
+          docker push $DOCKER_IMAGE
+          docker push iceteagreen/file-storage:latest
 
       # Deployment
       - uses: webfactory/ssh-agent@v0.7.0
