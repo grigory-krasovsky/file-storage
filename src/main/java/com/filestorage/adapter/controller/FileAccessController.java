@@ -14,6 +14,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/file/access")
@@ -35,7 +37,7 @@ public class FileAccessController extends AbstractController {
     public ResponseEntity<Resource> getFile(@RequestBody FileAccessGetRequest request) {
         FileAccessGetResponse fileAccess = fileAccessManager.getFileAccess(request);
         return ResponseEntity.ok()
-                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .contentType(MediaType.parseMediaType(fileAccess.getContentType()))
                 .header(HttpHeaders.CONTENT_DISPOSITION,
                         String.format("attachment; filename=\"%s\"", fileAccess.getFileName()))
                 .body(fileAccess.getResource());

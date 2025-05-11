@@ -45,7 +45,7 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity
                 .status(e.getErrorType().getStatusCode())
-                .body(ErrorResponse.fromException(e, request));
+                .body(ErrorResponse.fromException(e));
     }
 
     @ExceptionHandler(DataBaseException.class)
@@ -56,7 +56,7 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity
                 .status(e.getErrorType().getStatusCode())
-                .body(ErrorResponse.fromException(e, request));
+                .body(ErrorResponse.fromException(e));
     }
 
     @ExceptionHandler(FileAccessException.class)
@@ -67,7 +67,7 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity
                 .status(e.getErrorType().getStatusCode())
-                .body(ErrorResponse.fromException(e, request));
+                .body(ErrorResponse.fromException(e));
     }
 
 
@@ -78,7 +78,7 @@ public class GlobalExceptionHandler {
         saveErrorLog(stacktrace, getClassName(e), getFullMessage(e), request);
         return ResponseEntity
                 .status(500)
-                .body(ErrorResponse.fromException(getFullMessage(e), request));
+                .body(ErrorResponse.fromException(getFullMessage(e)));
     }
 
     private void saveErrorLog(String stacktrace, String className, String details, HttpServletRequest request) {

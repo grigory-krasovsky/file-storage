@@ -13,23 +13,21 @@ public record ErrorResponse(
         ErrorType type,
         String message,
         String path) {
-    public static ErrorResponse fromException(FileStorageException ex, HttpServletRequest request) {
+    public static ErrorResponse fromException(FileStorageException ex) {
         return ErrorResponse
                 .builder()
                 .timestamp(OffsetDateTime.now())
                 .type(ex.getErrorType())
                 .message(ex.getMessage())
-                .path(request.getContextPath())
                 .build();
     }
 
-    public static ErrorResponse fromException(String message, HttpServletRequest request) {
+    public static ErrorResponse fromException(String message) {
         return ErrorResponse
                 .builder()
                 .timestamp(OffsetDateTime.now())
                 .type(ErrorType.SYSTEM_ERROR)
                 .message(message)
-                .path(request.getContextPath())
                 .build();
     }
 }
