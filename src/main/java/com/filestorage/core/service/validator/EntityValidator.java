@@ -5,7 +5,8 @@ import com.filestorage.domain.entity.AbstractEntity;
 import java.time.OffsetDateTime;
 
 public interface EntityValidator<E extends AbstractEntity> {
-    void correct(E entity);
+    void correctForCreate(E entity);
+    void correctForUpdate(E entity);
 
     default void correctCreatedAt(E entity) {
         if (entity.getCreatedAt() == null) {

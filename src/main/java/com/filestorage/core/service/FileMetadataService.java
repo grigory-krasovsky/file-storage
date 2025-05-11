@@ -6,5 +6,5 @@ import com.filestorage.domain.entity.FileMetadata;
 import java.util.Optional;
 
 public interface FileMetadataService extends CRUDService<FileMetadata> {
-    Optional<FileMetadata> findByLocation(FileLocation fileLocation);
+    FileMetadata findByLocation(FileLocation fileLocation);
 }

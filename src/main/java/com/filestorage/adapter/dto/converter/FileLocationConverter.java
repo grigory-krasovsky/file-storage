@@ -19,13 +19,6 @@ public class FileLocationConverter implements Converter<FileLocation, FileLocati
     }
 
     @Override
-    public FileLocation toReferenceEntity(UUID id) {
-        return FileLocation.builder()
-                .id(id)
-                .build();
-    }
-
-    @Override
     public @NonNull FileLocationDTO toDto(FileLocation fileLocation) {
         return FileLocationDTO.builder()
                 .id(fileLocation.getId())

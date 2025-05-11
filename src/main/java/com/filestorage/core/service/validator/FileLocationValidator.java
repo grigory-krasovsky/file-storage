@@ -7,7 +7,12 @@ import org.springframework.stereotype.Service;
 public class FileLocationValidator implements EntityValidator<FileLocation> {
 
     @Override
-    public void correct(FileLocation entity) {
+    public void correctForCreate(FileLocation entity) {
         correctCreatedAt(entity);
+    }
+
+    @Override
+    public void correctForUpdate(FileLocation entity) {
+
     }
 }

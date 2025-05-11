@@ -6,7 +6,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class ErrorValidator implements EntityValidator<ErrorLog> {
     @Override
-    public void correct(ErrorLog entity) {
+    public void correctForCreate(ErrorLog entity) {
         correctCreatedAt(entity);
+    }
+
+    @Override
+    public void correctForUpdate(ErrorLog entity) {
+
     }
 }

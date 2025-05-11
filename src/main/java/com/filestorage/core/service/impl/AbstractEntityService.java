@@ -21,7 +21,7 @@ public class AbstractEntityService<E extends AbstractEntity, V extends EntityVal
 
     @Override
     public E create(E entity) {
-        validator.correct(entity);
+        validator.correctForCreate(entity);
         return repository.save(entity);
     }
 
@@ -32,6 +32,7 @@ public class AbstractEntityService<E extends AbstractEntity, V extends EntityVal
 
     @Override
     public Optional<E> update(E entity) {
+        validator.correctForUpdate(entity);
         return Optional.of(repository.save(entity));
     }
 

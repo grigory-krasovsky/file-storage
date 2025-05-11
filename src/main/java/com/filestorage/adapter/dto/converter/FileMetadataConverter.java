@@ -23,18 +23,13 @@ public class FileMetadataConverter implements Converter<FileMetadata, FileMetada
                 .author(fileMetadataDTO.getAuthor())
                 .comment(fileMetadataDTO.getComment())
                 .fileDateTime(fileMetadataDTO.getFileDateTime())
+                .fileName(fileMetadataDTO.getFileName())
+                .contentType(fileMetadataDTO.getContentType())
                 .fileLocation(
                         FileLocation.builder()
                                 .id(fileMetadataDTO.getFileLocationDTO().getId())
                                 .build()
                 )
-                .build();
-    }
-
-    @Override
-    public FileMetadata toReferenceEntity(UUID id) {
-        return FileMetadata.builder()
-                .id(id)
                 .build();
     }
 
@@ -46,6 +41,8 @@ public class FileMetadataConverter implements Converter<FileMetadata, FileMetada
                 .author(fileMetadata.getAuthor())
                 .comment(fileMetadata.getComment())
                 .fileDateTime(fileMetadata.getFileDateTime())
+                .fileName(fileMetadata.getFileName())
+                .contentType(fileMetadata.getContentType())
                 .fileLocationDTO(fileLocationConverter.toDto(fileMetadata.getFileLocation()))
                 .build();
     }

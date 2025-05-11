@@ -26,4 +26,15 @@ public class DataBaseException extends FileStorageException {
     public static String FILE_STATUS_IS_ABSENT(UUID id) {
         return String.format("Unable to find file status with location id %s", id);
     }
+
+    public static String NO_SUCCESS_STATUS(UUID id) {
+        return String.format("The file with location id %s has not been uploaded", id);
+    }
+
+    public static String NO_FILE_NAME(UUID id) {
+        return String.format("File name for metadata with id %s is absent", id);
+    }
+    public static String NO_CONTENT_TYPE(UUID id) {
+        return String.format("Content type for metadata with id %s is absent", id);
+    }
 }

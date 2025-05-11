@@ -11,5 +11,4 @@ public interface Converter<E extends AbstractEntity, D extends AbstractDTO> {
     D toDto(E entity);
     @NonNull
     E toEntity(D dto);
-    E toReferenceEntity(UUID id);
 }

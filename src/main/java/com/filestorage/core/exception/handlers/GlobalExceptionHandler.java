@@ -2,6 +2,7 @@ package com.filestorage.core.exception.handlers;
 
 import com.filestorage.adapter.dto.response.ErrorResponse;
 import com.filestorage.core.exception.DataBaseException;
+import com.filestorage.core.exception.FileAccessException;
 import com.filestorage.core.exception.FileUploadException;
 import com.filestorage.core.exception.enums.ErrorType;
 import com.filestorage.core.service.ErrorLogService;
@@ -49,6 +50,17 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(DataBaseException.class)
     public ResponseEntity<ErrorResponse> handleFileStorageException(DataBaseException e, HttpServletRequest request) {
+        String stacktrace = Arrays.toString(e.getStackTrace());
+
+        saveErrorLog(stacktrace, getClassName(e), getFullMessage(e), request);
+
+        return ResponseEntity
+                .status(e.getErrorType().getStatusCode())
+                .body(ErrorResponse.fromException(e, request));
+    }
+
+    @ExceptionHandler(FileAccessException.class)
+    public ResponseEntity<ErrorResponse> handleFileStorageException(FileAccessException e, HttpServletRequest request) {
         String stacktrace = Arrays.toString(e.getStackTrace());
 
         saveErrorLog(stacktrace, getClassName(e), getFullMessage(e), request);

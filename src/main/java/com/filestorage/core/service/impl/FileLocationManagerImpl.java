@@ -103,8 +103,7 @@ public class FileLocationManagerImpl implements FileLocationManager {
                 .fileLocation(fileLocation)
                 .status(UPLOAD_STARTED).build());
 
-        FileMetadata fileMetadata = fileMetadataService.findByLocation(fileLocation)
-                .orElseThrow(() -> new DataBaseException(ErrorType.SYSTEM_ERROR, FILE_METADATA_IS_ABSENT_MESSAGE(request.getId())));
+        FileMetadata fileMetadata = fileMetadataService.findByLocation(fileLocation);
         if (request.getContents().isEmpty()) {
             throw new FileUploadException(fileLocation.getId(), ErrorType.VALIDATION, EMPTY_FILE(fileLocation.getId()));
         }
@@ -119,10 +118,6 @@ public class FileLocationManagerImpl implements FileLocationManager {
     private Boolean validateUploadIsPossible(FileLocation fileLocation) {
         List<FileStatus> allStatuses = fileStatusService.findAllByFileLocation(fileLocation);
         UUID fileLocationId = fileLocation.getId();
-
-        if (allStatuses.isEmpty()) {
-            throw new DataBaseException(ErrorType.SYSTEM_ERROR, FILE_STATUS_IS_ABSENT(fileLocationId));
-        }
 
         if (allStatuses.stream().anyMatch(s -> s.getStatus() == UPLOAD_SUCCESS)) {
             throw new FileUploadException(fileLocationId, ErrorType.SYSTEM_ERROR, DUPLICATE_ID_UPLOAD(fileLocationId));
@@ -149,6 +144,16 @@ public class FileLocationManagerImpl implements FileLocationManager {
                 .build());
 
         return fileLocation;
+    }
+
+    @Override
+    public FileMetadataDTO getFileLocationWithMetadata(UUID id) {
+        FileLocation fileLocation = fileLocationService.findById(id);
+        if (!fileStatusService.statusExistsForFileLocation(fileLocation, UPLOAD_SUCCESS)) {
+            throw new DataBaseException(ErrorType.SYSTEM_ERROR, NO_SUCCESS_STATUS(id));
+        }
+        FileMetadata metadata = fileMetadataService.findByLocation(fileLocation);
+        return fileMetadataConverter.toDto(metadata);
     }
 
     private String getFilePath(@NonNull FileMetadataDTO fileMetadataDTO, @NonNull UUID id) {

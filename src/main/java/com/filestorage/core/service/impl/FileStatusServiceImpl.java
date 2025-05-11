@@ -6,6 +6,7 @@ import com.filestorage.core.service.FileStatusService;
 import com.filestorage.core.service.validator.FileStatusValidator;
 import com.filestorage.domain.entity.FileLocation;
 import com.filestorage.domain.entity.FileStatus;
+import com.filestorage.domain.enums.FileStatusType;
 import com.filestorage.domain.repository.FileUploadStatusRepository;
 import org.springframework.stereotype.Service;
 
@@ -28,5 +29,11 @@ public class FileStatusServiceImpl extends AbstractEntityService<FileStatus, Fil
             throw new DataBaseException(ErrorType.SYSTEM_ERROR, FILE_STATUS_IS_ABSENT(fileLocation.getId()));
         }
         return statuses;
+    }
+
+    @Override
+    public Boolean statusExistsForFileLocation(FileLocation fileLocation, FileStatusType fileStatusType) {
+        List<FileStatus> allStatuses = findAllByFileLocation(fileLocation);
+        return allStatuses.stream().anyMatch(fileStatus -> fileStatus.getStatus().equals(fileStatusType));
     }
 }
