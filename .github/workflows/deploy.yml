@@ -8,7 +8,9 @@ env:
   VPS_IP: ${{ secrets.VPS_IP }}
   VPS_USER: ${{ secrets.VPS_USER }}
   SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
-  PROJECT_NAME: file-storage
+  # Define your project name as a variable here
+  PROJECT_NAME: "file-storage"
+  # Then use it in the DOCKER_IMAGE definition
   DOCKER_IMAGE: iceteagreen/$PROJECT_NAME:${{ github.run_id }}
 
 jobs:
@@ -48,10 +50,10 @@ jobs:
               $VPS_USER@$VPS_IP:/home/$PROJECT_NAME/
 
       - name: Deploy
-        run: |  
+        run: |
           ssh -T $VPS_USER@$VPS_IP <<EOF
           docker pull iceteagreen/$PROJECT_NAME:latest
           cd /home/$PROJECT_NAME
-          docker compose -f docker-compose.prod.yml down  # Remove old containers
-          docker compose -f docker-compose.prod.yml up -d --force-recreate  # Create new ones
+          docker compose -f docker-compose.prod.yml down
+          docker compose -f docker-compose.prod.yml up -d --force-recreate
           EOF
