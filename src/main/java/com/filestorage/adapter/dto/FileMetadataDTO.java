@@ -20,5 +20,6 @@ public class FileMetadataDTO extends AbstractDTO {
     String comment;
     String fileName;
     String contentType;
+    Boolean relevant;
     OffsetDateTime fileDateTime;
 }

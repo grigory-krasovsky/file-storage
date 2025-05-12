@@ -12,7 +12,7 @@ import java.util.UUID;
 @Builder
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class FileAccessCreateRequest {
+public class FileAccessSaveRequest {
     @NonNull
     UUID id;
     @NonNull

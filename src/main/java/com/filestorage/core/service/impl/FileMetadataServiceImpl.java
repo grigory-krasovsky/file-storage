@@ -9,8 +9,6 @@ import com.filestorage.domain.entity.FileMetadata;
 import com.filestorage.domain.repository.FileMetadataRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class FileMetadataServiceImpl extends AbstractEntityService<FileMetadata, FileMetadataValidator, FileMetadataRepository>
         implements FileMetadataService {
@@ -20,9 +18,9 @@ public class FileMetadataServiceImpl extends AbstractEntityService<FileMetadata,
     }
 
     @Override
-    public FileMetadata findByLocation(FileLocation fileLocation) {
+    public FileMetadata findByLocationAndRelevant(FileLocation fileLocation) {
 
-        return this.repository.findByFileLocation(fileLocation)
+        return this.repository.findByFileLocationAndRelevant(fileLocation, true)
                 .orElseThrow(() -> new DataBaseException(ErrorType.SYSTEM_ERROR, DataBaseException.FILE_METADATA_IS_ABSENT_MESSAGE(fileLocation.getId())));
     }
 }

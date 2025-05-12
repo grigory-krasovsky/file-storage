@@ -1,4 +1,8 @@
 spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
   application:
     name: file-storage
   datasource:
@@ -20,5 +24,5 @@ spring:
     user: admin
     password: admin
     locations: classpath:db/migration
-    baseline-on-migrate: true # Creates flyway_schema_history if missing
-    clean-disabled: true # Prevents accidental database wipes
+    baseline-on-migrate: true
+    clean-disabled: true

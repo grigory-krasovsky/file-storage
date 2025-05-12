@@ -25,6 +25,7 @@ public class FileMetadataConverter implements Converter<FileMetadata, FileMetada
                 .fileDateTime(fileMetadataDTO.getFileDateTime())
                 .fileName(fileMetadataDTO.getFileName())
                 .contentType(fileMetadataDTO.getContentType())
+                .relevant(fileMetadataDTO.getRelevant())
                 .fileLocation(
                         FileLocation.builder()
                                 .id(fileMetadataDTO.getFileLocationDTO().getId())
@@ -43,6 +44,7 @@ public class FileMetadataConverter implements Converter<FileMetadata, FileMetada
                 .fileDateTime(fileMetadata.getFileDateTime())
                 .fileName(fileMetadata.getFileName())
                 .contentType(fileMetadata.getContentType())
+                .relevant(fileMetadata.getRelevant())
                 .fileLocationDTO(fileLocationConverter.toDto(fileMetadata.getFileLocation()))
                 .build();
     }
