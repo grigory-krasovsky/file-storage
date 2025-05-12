@@ -1,7 +1,7 @@
 package com.filestorage.core.service.impl;
 
 import com.filestorage.adapter.dto.FileMetadataDTO;
-import com.filestorage.adapter.dto.request.FileAccessCreateRequest;
+import com.filestorage.adapter.dto.request.FileAccessSaveRequest;
 import com.filestorage.adapter.dto.request.FileAccessGetRequest;
 import com.filestorage.adapter.dto.response.FileAccessGetResponse;
 import com.filestorage.core.exception.FileAccessException;
@@ -36,25 +36,23 @@ public class FileAccessManagerImpl implements FileAccessManager {
 
     @Override
     @Transactional
-    public void createFileAccess(FileAccessCreateRequest request) {
+    public void createFileAccess(FileAccessSaveRequest request) {
 
         FileLocation fileLocation = fileLocationManager.beforeCreate(request);
 
-        Path filePath = Paths.get(fileLocation.getFilePath());
+        createFile(fileLocation, request);
 
-        try {
-            Files.createDirectories(filePath.getParent());
-        } catch (IOException e) {
-            throw new FileUploadException(fileLocation.getId(), ErrorType.SYSTEM_ERROR, UNABLE_TO_CREATE_DIRECTORY(filePath.getParent().toString()));
-        }
+        fileLocationManager.afterSave(request);
+    }
 
-        try {
-            Files.write(filePath, request.getContents().getBytes());
-        } catch (IOException e) {
-            throw new FileUploadException(fileLocation.getId(), ErrorType.SYSTEM_ERROR, UNABLE_TO_CREATE_FILE(filePath.toString()));
-        }
+    @Override
+    public void updateFileAccess(FileAccessSaveRequest request) {
 
-        fileLocationManager.afterCreate(request);
+        FileLocation fileLocation = fileLocationManager.beforeUpdate(request);
+
+        createFile(fileLocation, request);
+
+        fileLocationManager.afterSave(request);
     }
 
     @Override
@@ -81,6 +79,22 @@ public class FileAccessManagerImpl implements FileAccessManager {
 
         } catch (MalformedURLException e) {
             throw new FileAccessException(ErrorType.SYSTEM_ERROR, MALFORMED_PATH(filePath.toString()));
+        }
+    }
+
+    private void createFile(FileLocation fileLocation, FileAccessSaveRequest request) {
+        Path filePath = Paths.get(fileLocation.getFilePath());
+
+        try {
+            Files.createDirectories(filePath.getParent());
+        } catch (IOException e) {
+            throw new FileUploadException(fileLocation.getId(), ErrorType.SYSTEM_ERROR, UNABLE_TO_CREATE_DIRECTORY(filePath.getParent().toString()));
+        }
+
+        try {
+            Files.write(filePath, request.getContents().getBytes());
+        } catch (IOException e) {
+            throw new FileUploadException(fileLocation.getId(), ErrorType.SYSTEM_ERROR, UNABLE_TO_CREATE_FILE(filePath.toString()));
         }
     }
 }

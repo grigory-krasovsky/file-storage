@@ -4,7 +4,7 @@ import com.filestorage.adapter.dto.FileLocationDTO;
 import com.filestorage.adapter.dto.FileMetadataDTO;
 import com.filestorage.adapter.dto.converter.FileLocationConverter;
 import com.filestorage.adapter.dto.converter.FileMetadataConverter;
-import com.filestorage.adapter.dto.request.FileAccessCreateRequest;
+import com.filestorage.adapter.dto.request.FileAccessSaveRequest;
 import com.filestorage.adapter.dto.request.FileLocationCreateRequest;
 import com.filestorage.adapter.dto.response.FileLocationGetResponse;
 import com.filestorage.core.exception.DataBaseException;
@@ -19,7 +19,6 @@ import com.filestorage.core.utils.FileAccessUtils;
 import com.filestorage.domain.entity.FileLocation;
 import com.filestorage.domain.entity.FileMetadata;
 import com.filestorage.domain.entity.FileStatus;
-import com.filestorage.domain.enums.FileStatusType;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
@@ -31,7 +30,6 @@ import java.nio.file.Path;
 import java.time.OffsetDateTime;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import static com.filestorage.core.exception.DataBaseException.*;
@@ -94,7 +92,11 @@ public class FileLocationManagerImpl implements FileLocationManager {
     }
 
     @Override
-    public FileLocation beforeCreate(@NonNull FileAccessCreateRequest request) {
+    public FileLocation beforeCreate(@NonNull FileAccessSaveRequest request) {
+        if (request.getContents().isEmpty()) {
+            throw new FileUploadException(request.getId(), ErrorType.VALIDATION, EMPTY_FILE(request.getId()));
+        }
+
         FileLocation fileLocation = fileLocationService.findById(request.getId());
 
         validateUploadIsPossible(fileLocation);
@@ -103,10 +105,7 @@ public class FileLocationManagerImpl implements FileLocationManager {
                 .fileLocation(fileLocation)
                 .status(UPLOAD_STARTED).build());
 
-        FileMetadata fileMetadata = fileMetadataService.findByLocation(fileLocation);
-        if (request.getContents().isEmpty()) {
-            throw new FileUploadException(fileLocation.getId(), ErrorType.VALIDATION, EMPTY_FILE(fileLocation.getId()));
-        }
+        FileMetadata fileMetadata = fileMetadataService.findByLocationAndRelevant(fileLocation);
 
         fileMetadata.setFileName(request.getContents().getOriginalFilename());
         fileMetadata.setContentType(request.getContents().getContentType());
@@ -135,7 +134,7 @@ public class FileLocationManagerImpl implements FileLocationManager {
     }
 
     @Override
-    public FileLocation afterCreate(@NonNull FileAccessCreateRequest request) {
+    public FileLocation afterSave(@NonNull FileAccessSaveRequest request) {
         FileLocation fileLocation = fileLocationService.findById(request.getId());
 
         fileStatusService.create(FileStatus.builder()
@@ -152,8 +151,36 @@ public class FileLocationManagerImpl implements FileLocationManager {
         if (!fileStatusService.statusExistsForFileLocation(fileLocation, UPLOAD_SUCCESS)) {
             throw new DataBaseException(ErrorType.SYSTEM_ERROR, NO_SUCCESS_STATUS(id));
         }
-        FileMetadata metadata = fileMetadataService.findByLocation(fileLocation);
+        FileMetadata metadata = fileMetadataService.findByLocationAndRelevant(fileLocation);
         return fileMetadataConverter.toDto(metadata);
+    }
+
+    //Todo probably wrong approach. Need to be carried out in 2 steps like creation
+    @Override
+    public FileLocation beforeUpdate(FileAccessSaveRequest request) {
+        if (request.getContents().isEmpty()) {
+            throw new FileUploadException(request.getId(), ErrorType.VALIDATION, EMPTY_FILE(request.getId()));
+        }
+
+        FileLocation fileLocation = fileLocationService.findById(request.getId());
+        fileStatusService.create(FileStatus.builder()
+                .fileLocation(fileLocation)
+                .status(UPDATE_UPLOAD_STARTED).build());
+
+        FileMetadata oldFileMetadata = fileMetadataService.findByLocationAndRelevant(fileLocation);
+        oldFileMetadata.setRelevant(false);
+
+        FileMetadata newFileMetadata = FileMetadata.builder()
+                .relevant(true)
+                .fileName(request.getContents().getOriginalFilename())
+                .contentType(request.getContents().getContentType())
+                .fileLocation(fileLocation)
+                .author(oldFileMetadata.getAuthor()) //Todo probably wrong
+                .build();
+
+        fileMetadataService.batchSave(List.of(oldFileMetadata, newFileMetadata));
+
+        return fileLocation;
     }
 
     private String getFilePath(@NonNull FileMetadataDTO fileMetadataDTO, @NonNull UUID id) {

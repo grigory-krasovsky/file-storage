@@ -8,6 +8,7 @@ import com.filestorage.domain.entity.AbstractEntity;
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -44,5 +45,11 @@ public class AbstractEntityService<E extends AbstractEntity, V extends EntityVal
     @Override
     public Boolean exists(UUID uuid) {
         return repository.existsById(uuid);
+    }
+
+    @Override
+    public List<E> batchSave(List<E> entities) {
+        validator.correctForBatchSave(entities);
+        return repository.saveAll(entities);
     }
 }
