@@ -10,8 +10,6 @@ env:
   SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
   # Define your project name as a variable here
   PROJECT_NAME: "file-storage"
-  # Then use it in the DOCKER_IMAGE definition
-  DOCKER_IMAGE: iceteagreen/$PROJECT_NAME:${{ github.run_id }}
 
 jobs:
   deploy:
@@ -28,7 +26,7 @@ jobs:
 
       - name: Build and Push
         run: |
-          docker build -t $DOCKER_IMAGE -t iceteagreen/$PROJECT_NAME:latest .
+          docker build -t iceteagreen/$PROJECT_NAME:${{ github.run_id }} -t iceteagreen/$PROJECT_NAME:latest .
           docker push iceteagreen/$PROJECT_NAME:latest
 
       # Deployment
