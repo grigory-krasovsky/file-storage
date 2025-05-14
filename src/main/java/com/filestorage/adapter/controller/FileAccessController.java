@@ -13,6 +13,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
 @RestController
 @AllArgsConstructor
@@ -47,5 +55,43 @@ public class FileAccessController extends AbstractController {
                 .header(HttpHeaders.CONTENT_DISPOSITION,
                         String.format("attachment; filename=\"%s\"", fileAccess.getFileName()))
                 .body(fileAccess.getResource());
+    }
+
+
+    @PostMapping("/stream")
+    public ResponseEntity<String> handleLargeFileUpload(
+            @RequestParam("file") MultipartFile file) {
+
+        if (file.isEmpty()) {
+            return ResponseEntity.badRequest().body("File is empty");
+        }
+
+        // Create uploads directory if it doesn't exist
+//        Path uploadDir = Paths.get("uploads");
+//        try {
+//            Files.createDirectories(uploadDir);
+//        } catch (IOException e) {
+//            return ResponseEntity.internalServerError()
+//                    .body("Failed to create upload directory");
+//        }
+//
+//        // Stream the file to disk
+//        Path targetPath = uploadDir.resolve(
+//                Paths.get(file.getOriginalFilename()).getFileName() // Sanitize filename
+//        );
+//
+//        try (InputStream inputStream = file.getInputStream()) {
+//            Files.copy(inputStream, targetPath, StandardCopyOption.REPLACE_EXISTING);
+//            return ResponseEntity.ok(
+//                    String.format("File '%s' (%d bytes) saved to %s",
+//                            file.getOriginalFilename(),
+//                            file.getSize(),
+//                            targetPath.toAbsolutePath())
+//            );
+//        } catch (IOException e) {
+//            return ResponseEntity.internalServerError()
+//                    .body("Failed to save file: " + e.getMessage());
+//        }
+        return ResponseEntity.ok("ok");
     }
 }
