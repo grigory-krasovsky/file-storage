@@ -19,6 +19,7 @@ import com.filestorage.core.utils.FileAccessUtils;
 import com.filestorage.domain.entity.FileLocation;
 import com.filestorage.domain.entity.FileMetadata;
 import com.filestorage.domain.entity.FileStatus;
+import com.filestorage.grpc.GrpcFileAccessSaveRequest;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
@@ -114,6 +115,28 @@ public class FileLocationManagerImpl implements FileLocationManager {
         return fileLocation;
     }
 
+    @Override
+    public FileLocation beforeCreate(GrpcFileAccessSaveRequest request) {
+        UUID uuid = UUID.fromString(request.getId());
+        if (request.getContents().isEmpty()) {
+            throw new FileUploadException(uuid, ErrorType.VALIDATION, EMPTY_FILE(uuid));
+        }
+        FileLocation fileLocation = fileLocationService.findById(uuid);
+
+        validateUploadIsPossible(fileLocation);
+
+        fileStatusService.create(FileStatus.builder()
+                .fileLocation(fileLocation)
+                .status(UPLOAD_STARTED).build());
+
+        FileMetadata fileMetadata = fileMetadataService.findByLocationAndRelevant(fileLocation);
+
+        fileMetadata.setFileName(request.getFilename());
+        fileMetadata.setContentType(request.getContentType());
+        fileMetadataService.update(fileMetadata);
+        return fileLocation;
+    }
+
     private Boolean validateUploadIsPossible(FileLocation fileLocation) {
         List<FileStatus> allStatuses = fileStatusService.findAllByFileLocation(fileLocation);
         UUID fileLocationId = fileLocation.getId();
@@ -136,6 +159,20 @@ public class FileLocationManagerImpl implements FileLocationManager {
     @Override
     public FileLocation afterSave(@NonNull FileAccessSaveRequest request) {
         FileLocation fileLocation = fileLocationService.findById(request.getId());
+
+        fileStatusService.create(FileStatus.builder()
+                .fileLocation(fileLocation)
+                .status(UPLOAD_SUCCESS)
+                .build());
+
+        return fileLocation;
+    }
+
+    @Override
+    public FileLocation afterSave(GrpcFileAccessSaveRequest request) {
+        UUID uuid = UUID.fromString(request.getId());
+
+        FileLocation fileLocation = fileLocationService.findById(uuid);
 
         fileStatusService.create(FileStatus.builder()
                 .fileLocation(fileLocation)

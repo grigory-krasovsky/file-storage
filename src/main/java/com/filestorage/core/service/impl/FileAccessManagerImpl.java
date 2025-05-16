@@ -10,6 +10,8 @@ import com.filestorage.core.exception.enums.ErrorType;
 import com.filestorage.core.service.FileAccessManager;
 import com.filestorage.core.service.FileLocationManager;
 import com.filestorage.domain.entity.FileLocation;
+import com.filestorage.grpc.GrpcFileAccessSaveRequest;
+import com.google.protobuf.ByteString;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -38,6 +40,15 @@ public class FileAccessManagerImpl implements FileAccessManager {
     @Transactional
     public void createFileAccess(FileAccessSaveRequest request) {
 
+        FileLocation fileLocation = fileLocationManager.beforeCreate(request);
+
+        createFile(fileLocation, request);
+
+        fileLocationManager.afterSave(request);
+    }
+
+    @Override
+    public void createFileAccess(GrpcFileAccessSaveRequest request) {
         FileLocation fileLocation = fileLocationManager.beforeCreate(request);
 
         createFile(fileLocation, request);
@@ -93,6 +104,22 @@ public class FileAccessManagerImpl implements FileAccessManager {
 
         try {
             Files.write(filePath, request.getContents().getBytes());
+        } catch (IOException e) {
+            throw new FileUploadException(fileLocation.getId(), ErrorType.SYSTEM_ERROR, UNABLE_TO_CREATE_FILE(filePath.toString()));
+        }
+    }
+
+    private void createFile(FileLocation fileLocation, GrpcFileAccessSaveRequest request) {
+        Path filePath = Paths.get(fileLocation.getFilePath());
+
+        try {
+            Files.createDirectories(filePath.getParent());
+        } catch (IOException e) {
+            throw new FileUploadException(fileLocation.getId(), ErrorType.SYSTEM_ERROR, UNABLE_TO_CREATE_DIRECTORY(filePath.getParent().toString()));
+        }
+
+        try {
+            Files.write(filePath, request.getContents().toByteArray());
         } catch (IOException e) {
             throw new FileUploadException(fileLocation.getId(), ErrorType.SYSTEM_ERROR, UNABLE_TO_CREATE_FILE(filePath.toString()));
         }

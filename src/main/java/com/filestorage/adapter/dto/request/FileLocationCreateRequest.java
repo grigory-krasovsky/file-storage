@@ -20,5 +20,8 @@ public class FileLocationCreateRequest {
         if (fileMetadataDTO.getFileLocationDTO() == null) {
             fileMetadataDTO.setFileLocationDTO(FileLocationDTO.builder().build());
         }
+        if (fileMetadataDTO.getRelevant() == null) {
+            fileMetadataDTO.setRelevant(true);
+        }
     }
 }
