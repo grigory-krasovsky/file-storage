@@ -26,3 +26,7 @@ spring:
     locations: classpath:db/migration
     baseline-on-migrate: true
     clean-disabled: true
+grpc:
+  server:
+    port: 9090
+    max-inbound-message-size: 20MB
