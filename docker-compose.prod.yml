@@ -5,6 +5,7 @@ services:
     image: iceteagreen/file-storage:latest  # Use your pushed image
     ports:
       - "8080:8080"
+      - "9090:9090"
     environment:
       SPRING_PROFILES_ACTIVE: docker
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/file-storage
@@ -16,7 +17,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
-
+    networks:
+      - grpc-network-1
   db:
     image: postgres:15-alpine
     healthcheck:
@@ -32,7 +34,11 @@ services:
       - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
-
+    networks:
+      - grpc-network-1
+networks:
+  grpc-network-1:
+    external: true
 volumes:
   postgres_data:
   file-storage-volume:
