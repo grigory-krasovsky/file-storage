@@ -54,6 +54,7 @@ public class FileAccessManagerImpl implements FileAccessManager {
         createFile(fileLocation, request);
 
         fileLocationManager.afterSave(request);
+        System.out.println("file saved");
     }
 
     @Override

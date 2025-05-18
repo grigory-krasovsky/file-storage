@@ -25,6 +25,7 @@ public class FileStorageClient extends FileStorageServiceGrpc.FileStorageService
 
     @Override
     public void saveFile(GrpcFileAccessSaveRequest request, StreamObserver<GrpcFileAccessSaveResponse> responseObserver) {
+        System.out.println("file received");
 
         fileAccessManager.createFileAccess(request);
 
@@ -41,69 +42,7 @@ public class FileStorageClient extends FileStorageServiceGrpc.FileStorageService
     @Override
     public StreamObserver<GrpcFileChunk> saveFileStream(
             StreamObserver<GrpcFileAccessSaveResponse> responseObserver) {
+        System.out.println("stream received");
         return new FileStreamObserver(responseObserver, fileAccessManager::createFileAccess);
     }
-
-    //working:
-//    @Override
-//    public StreamObserver<GrpcFileChunk> saveFileStream(StreamObserver<GrpcFileAccessSaveResponse> responseObserver) {
-//        StreamObserver<GrpcFileChunk> fileSavedSuccessfullyViaStreaming = new StreamObserver<>() {
-//            private ByteArrayOutputStream fileData = new ByteArrayOutputStream();
-//            private String id;
-//            private String filename;
-//            private String contentType;
-//
-//            @Override
-//            public void onNext(GrpcFileChunk chunk) {
-//                try {
-//                    // Store metadata from first chunk
-//                    if (id == null) {
-//                        id = chunk.getId();
-//                        filename = chunk.getFilename();
-//                        contentType = chunk.getContentType();
-//                    }
-//
-//                    // Accumulate chunks
-//                    fileData.write(chunk.getChunk().toByteArray());
-//                } catch (Exception e) {
-//                    responseObserver.onError(e);
-//                }
-//            }
-//
-//            @Override
-//            public void onError(Throwable t) {
-//                responseObserver.onError(t);
-//
-//            }
-//
-//            @Override
-//            public void onCompleted() {
-//                try {
-//                    // Create file from accumulated chunks
-//                    GrpcFileAccessSaveRequest request = GrpcFileAccessSaveRequest.newBuilder()
-//                            .setId(id)
-//                            .setContents(ByteString.copyFrom(fileData.toByteArray()))
-//                            .setFilename(filename)
-//                            .setContentType(contentType)
-//                            .build();
-//
-//                    fileAccessManager.createFileAccess(request);
-//
-//                    GrpcFileAccessSaveResponse response = GrpcFileAccessSaveResponse.newBuilder()
-//                            .setSuccess(true)
-//                            .setMessage("File saved successfully via streaming")
-//                            .setFileId(id)
-//                            .setSize(fileData.size())
-//                            .build();
-//
-//                    responseObserver.onNext(response);
-//                    responseObserver.onCompleted();
-//                } catch (Exception e) {
-//                    responseObserver.onError(e);
-//                }
-//            }
-//        };
-//        return fileSavedSuccessfullyViaStreaming;
-//    }
-
 }
