@@ -51,6 +51,9 @@ jobs:
           ssh -T $VPS_USER@$VPS_IP <<EOF
           docker pull iceteagreen/$PROJECT_NAME:latest
           cd /home/$PROJECT_NAME
+          if ! docker network inspect grpc-network-1 >/dev/null 2>&1; then
+            docker network create grpc-network-1
+          fi
           docker compose -f docker-compose.prod.yml down
           docker compose -f docker-compose.prod.yml up -d --force-recreate
           EOF
