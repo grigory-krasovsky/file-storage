@@ -20,4 +20,7 @@ public interface FileLocationManager {
     FileLocation afterSave(GrpcFileAccessSaveRequest request);
     FileMetadataDTO getFileLocationWithMetadata(UUID id);
     FileLocation beforeUpdate(FileAccessSaveRequest request);
+    FileLocation beforeDelete(UUID id);
+    FileLocation afterDelete(UUID id);
+    Boolean deletable(UUID id);
 }

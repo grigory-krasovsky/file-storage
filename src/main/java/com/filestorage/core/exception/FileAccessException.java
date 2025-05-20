@@ -28,6 +28,10 @@ public class FileAccessException extends FileStorageException {
         return String.format("Path %s is malformed", urlString);
     }
 
+    public static String UNABLE_TO_DELETE(String urlString) {
+        return String.format("Unable to delete file %s", urlString);
+    }
+
     public static String GENERAL_MESSAGE(String message) {
         return String.format("Something went wrong: %s", message);
     }

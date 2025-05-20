@@ -19,6 +19,7 @@ import com.filestorage.core.utils.FileAccessUtils;
 import com.filestorage.domain.entity.FileLocation;
 import com.filestorage.domain.entity.FileMetadata;
 import com.filestorage.domain.entity.FileStatus;
+import com.filestorage.domain.enums.FileStatusType;
 import com.filestorage.grpc.GrpcFileAccessSaveRequest;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -218,6 +219,34 @@ public class FileLocationManagerImpl implements FileLocationManager {
         fileMetadataService.batchSave(List.of(oldFileMetadata, newFileMetadata));
 
         return fileLocation;
+    }
+
+    @Override
+    public FileLocation beforeDelete(UUID id) {
+        FileLocation fileLocation = fileLocationService.findById(id);
+        fileStatusService.create(FileStatus.builder()
+                        .fileLocation(fileLocation)
+                        .status(TO_BE_DELETED)
+                .build());
+        return fileLocation;
+    }
+
+    @Override
+    public FileLocation afterDelete(UUID id) {
+        FileLocation fileLocation = fileLocationService.findById(id);
+        fileStatusService.create(FileStatus.builder()
+                        .fileLocation(fileLocation)
+                        .status(DELETED)
+                .build());
+        return fileLocation;
+    }
+
+    @Override
+    public Boolean deletable(UUID id) {
+        if (!fileLocationService.exists(id)) return false;
+
+        return !fileStatusService.statusExistsForFileLocation(fileLocationService.findById(id), DELETED)
+                && fileStatusService.statusExistsForFileLocation(fileLocationService.findById(id), UPLOAD_SUCCESS);
     }
 
     private String getFilePath(@NonNull FileMetadataDTO fileMetadataDTO, @NonNull UUID id) {

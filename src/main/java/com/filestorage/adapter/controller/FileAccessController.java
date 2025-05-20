@@ -1,11 +1,14 @@
 package com.filestorage.adapter.controller;
 
+import com.filestorage.adapter.dto.request.FileAccessBatchDeleteRequest;
+import com.filestorage.adapter.dto.request.FileAccessDeleteRequest;
 import com.filestorage.adapter.dto.request.FileAccessSaveRequest;
 import com.filestorage.adapter.dto.request.FileAccessGetRequest;
 import com.filestorage.adapter.dto.response.FileAccessGetResponse;
 import com.filestorage.core.service.FileAccessManager;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.Delegate;
 import lombok.experimental.FieldDefaults;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -21,6 +24,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
+import java.util.UUID;
 
 @RestController
 @AllArgsConstructor
@@ -66,5 +71,18 @@ public class FileAccessController extends AbstractController {
             return ResponseEntity.badRequest().body("File is empty");
         }
         return ResponseEntity.ok("ok");
+    }
+
+    @DeleteMapping
+    public ResponseEntity<String> deleteFile(@RequestBody FileAccessDeleteRequest request) {
+        fileAccessManager.deleteFileAccess(request.getId());
+        return ResponseEntity.ok("Deleted");
+    }
+    @DeleteMapping("/batch")
+    public ResponseEntity<String> deleteFiles(@RequestBody FileAccessBatchDeleteRequest request) {
+        List<UUID> uuids = fileAccessManager.deleteFileAccess(request);
+        String errorMsg = String.format("Unable to delete: %s", uuids);
+        String successMsg = "Deleted";
+        return ResponseEntity.ok(uuids.isEmpty() ? successMsg : errorMsg);
     }
 }

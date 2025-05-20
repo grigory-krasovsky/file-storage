@@ -34,6 +34,10 @@ public class DataBaseException extends FileStorageException {
     public static String NO_FILE_NAME(UUID id) {
         return String.format("File name for metadata with id %s is absent", id);
     }
+
+    public static String NOT_IMPLEMENTED() {
+        return "Method not implemented yet";
+    }
     public static String NO_CONTENT_TYPE(UUID id) {
         return String.format("Content type for metadata with id %s is absent", id);
     }

@@ -13,6 +13,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static com.filestorage.core.exception.DataBaseException.ENTITY_IS_ABSENT_MESSAGE;
+import static com.filestorage.core.exception.DataBaseException.NOT_IMPLEMENTED;
 
 @AllArgsConstructor
 public class AbstractEntityService<E extends AbstractEntity, V extends EntityValidator<E>, R extends JpaRepository<E, UUID>> implements CRUDService<E> {
@@ -39,7 +40,7 @@ public class AbstractEntityService<E extends AbstractEntity, V extends EntityVal
 
     @Override
     public Boolean delete(UUID uuid) {
-        return null;
+        throw new DataBaseException(ErrorType.SYSTEM_ERROR, NOT_IMPLEMENTED());
     }
 
     @Override
