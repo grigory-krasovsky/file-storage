@@ -29,4 +29,4 @@ spring:
 grpc:
   server:
     port: 9090
-    max-inbound-message-size: 20MB
+    max-inbound-message-size: 100MB
