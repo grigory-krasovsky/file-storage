@@ -33,6 +33,11 @@ public class AbstractEntityService<E extends AbstractEntity, V extends EntityVal
     }
 
     @Override
+    public List<E> findAll() {
+        return repository.findAll();
+    }
+
+    @Override
     public Optional<E> update(E entity) {
         validator.correctForUpdate(entity);
         return Optional.of(repository.save(entity));

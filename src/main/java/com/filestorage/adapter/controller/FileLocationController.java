@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @AllArgsConstructor
@@ -19,5 +21,10 @@ public class FileLocationController extends AbstractController {
     @ResponseStatus(HttpStatus.CREATED)
     public FileLocationGetResponse create(@RequestBody FileLocationCreateRequest fileLocationCreateRequest) {
         return fileLocationManager.createFileLocation(fileLocationCreateRequest);
+    }
+
+    @GetMapping
+    public List<FileLocationGetResponse> getAllFiles() {
+        return fileLocationManager.getAllFileLocationWithMetadataWithStatuses();
     }
 }

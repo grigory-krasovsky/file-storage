@@ -12,4 +12,5 @@ import java.util.UUID;
 @Repository
 public interface FileUploadStatusRepository extends JpaRepository<FileStatus, UUID> {
     List<FileStatus> findAllByFileLocation(FileLocation fileLocation);
+    List<FileStatus> findAllByFileLocationIn(List<FileLocation> fileLocations);
 }

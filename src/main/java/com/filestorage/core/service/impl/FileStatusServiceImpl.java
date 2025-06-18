@@ -11,6 +11,9 @@ import com.filestorage.domain.repository.FileUploadStatusRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static com.filestorage.core.exception.DataBaseException.*;
 
@@ -29,6 +32,15 @@ public class FileStatusServiceImpl extends AbstractEntityService<FileStatus, Fil
             throw new DataBaseException(ErrorType.SYSTEM_ERROR, FILE_STATUS_IS_ABSENT(fileLocation.getId()));
         }
         return statuses;
+    }
+
+    @Override
+    public Map<FileLocation, List<FileStatus>> findAllByFileLocations(List<FileLocation> fileLocations) {
+        List<FileStatus> allByFileLocationIn = this.repository.findAllByFileLocationIn(fileLocations);
+        return allByFileLocationIn.stream()
+                .collect(Collectors.groupingBy(status -> fileLocations.stream().filter(l ->
+                        l.getId().equals(status.getFileLocation().getId()))
+                        .findFirst().orElseThrow(() -> new RuntimeException("No such element"))));
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.filestorage.adapter.dto.FileLocationDTO;
 import com.filestorage.adapter.dto.FileMetadataDTO;
 import com.filestorage.adapter.dto.converter.FileLocationConverter;
 import com.filestorage.adapter.dto.converter.FileMetadataConverter;
+import com.filestorage.adapter.dto.converter.FileStatusConverter;
 import com.filestorage.adapter.dto.request.FileAccessSaveRequest;
 import com.filestorage.adapter.dto.request.FileLocationCreateRequest;
 import com.filestorage.adapter.dto.response.FileLocationGetResponse;
@@ -32,7 +33,9 @@ import java.nio.file.Path;
 import java.time.OffsetDateTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static com.filestorage.core.exception.DataBaseException.*;
 import static com.filestorage.core.exception.FileUploadException.*;
@@ -50,6 +53,7 @@ public class FileLocationManagerImpl implements FileLocationManager {
     FileMetadataConverter fileMetadataConverter;
     FileAccessUtils fileAccessUtils;
     CommonUtils commonUtils;
+    FileStatusConverter fileStatusConverter;
 
 
     @Override
@@ -191,6 +195,35 @@ public class FileLocationManagerImpl implements FileLocationManager {
         }
         FileMetadata metadata = fileMetadataService.findByLocationAndRelevant(fileLocation);
         return fileMetadataConverter.toDto(metadata);
+    }
+
+    @Override
+    public List<FileLocationGetResponse> getAllFileLocationWithMetadataWithStatuses() {
+        List<FileLocation> allFileLocations = fileLocationService.findAll();
+        Map<FileLocation, FileMetadata> locationMetadata = fileMetadataService.findByLocationsAndRelevant(allFileLocations);
+        Map<FileLocation, List<FileStatus>> locationStatuses = fileStatusService.findAllByFileLocations(allFileLocations);
+
+        return allFileLocations.stream().map(location -> {
+            FileStatus fileStatus = locationStatuses.get(location).stream()
+                    .max(Comparator.comparing(FileStatus::getCreatedAt)).stream().findFirst()
+                    .orElseThrow(() -> new RuntimeException("Unable to get the latest status"));
+            return FileLocationGetResponse
+                    .builder()
+                    .fileLocationUUID(location.getId())
+                    .fileMetadataResponse(
+                            FileLocationGetResponse.FileMetadataResponse
+                                    .builder()
+                                    .fileMetadataUUID(locationMetadata.get(location).getId())
+                                    .fileMetadataDTO(fileMetadataConverter.toDto(locationMetadata.get(location)))
+                                    .build())
+                    .fileStatusResponse(
+                            FileLocationGetResponse.FileStatusResponse
+                                    .builder()
+                                    .fileUploadStatusUUID(fileStatus.getId())
+                                    .fileStatusDTO(fileStatusConverter.toDto(fileStatus))
+                                    .build()
+                    ).build();
+        }).collect(Collectors.toList());
     }
 
     //Todo probably wrong approach. Need to be carried out in 2 steps like creation

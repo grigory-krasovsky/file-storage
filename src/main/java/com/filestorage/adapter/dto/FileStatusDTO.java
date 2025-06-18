@@ -16,5 +16,4 @@ public class FileStatusDTO extends AbstractDTO {
 
     FileLocationDTO fileLocationDTO;
     FileStatusType fileStatusType;
-    String stacktrace;
 }
