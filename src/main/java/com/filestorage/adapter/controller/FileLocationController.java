@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Random;
 
 
 @RestController
@@ -25,6 +26,10 @@ public class FileLocationController extends AbstractController {
 
     @GetMapping
     public List<FileLocationGetResponse> getAllFiles() {
+//        Random r = new Random();
+//        if (r.nextInt() % 2 == 0) {
+//            throw new RuntimeException("");
+//        }
         return fileLocationManager.getAllFileLocationWithMetadataWithStatuses();
     }
 }

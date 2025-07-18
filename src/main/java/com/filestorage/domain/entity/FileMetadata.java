@@ -30,4 +30,5 @@ public class FileMetadata extends AbstractEntity {
     @NonNull
     Boolean relevant;
     OffsetDateTime fileDateTime;
+    Integer size;
 }

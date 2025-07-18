@@ -22,6 +22,7 @@ import com.filestorage.domain.entity.FileMetadata;
 import com.filestorage.domain.entity.FileStatus;
 import com.filestorage.domain.enums.FileStatusType;
 import com.filestorage.grpc.GrpcFileAccessSaveRequest;
+import com.google.protobuf.ByteString;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
@@ -29,12 +30,10 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.time.OffsetDateTime;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.filestorage.core.exception.DataBaseException.*;
@@ -115,6 +114,13 @@ public class FileLocationManagerImpl implements FileLocationManager {
 
         fileMetadata.setFileName(request.getContents().getOriginalFilename());
         fileMetadata.setContentType(request.getContents().getContentType());
+        try {
+            byte[] bytes = request.getContents().getBytes();
+            Integer length = bytes.length;
+            fileMetadata.setSize(length);
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to get bytes");
+        }
 
         fileMetadataService.update(fileMetadata);
         return fileLocation;
@@ -136,6 +142,8 @@ public class FileLocationManagerImpl implements FileLocationManager {
 
         FileMetadata fileMetadata = fileMetadataService.findByLocationAndRelevant(fileLocation);
 
+        int size = request.getContents().size();
+        fileMetadata.setSize(size);
         fileMetadata.setFileName(request.getFilename());
         fileMetadata.setContentType(request.getContentType());
         fileMetadataService.update(fileMetadata);
