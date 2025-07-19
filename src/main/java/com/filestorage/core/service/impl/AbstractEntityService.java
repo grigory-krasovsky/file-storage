@@ -6,6 +6,8 @@ import com.filestorage.core.service.CRUDService;
 import com.filestorage.core.service.validator.EntityValidator;
 import com.filestorage.domain.entity.AbstractEntity;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -57,5 +59,10 @@ public class AbstractEntityService<E extends AbstractEntity, V extends EntityVal
     public List<E> batchSave(List<E> entities) {
         validator.correctForBatchSave(entities);
         return repository.saveAll(entities);
+    }
+
+    @Override
+    public Page<E> findAll(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 }

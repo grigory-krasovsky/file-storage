@@ -27,6 +27,9 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -206,12 +209,13 @@ public class FileLocationManagerImpl implements FileLocationManager {
     }
 
     @Override
-    public List<FileLocationGetResponse> getAllFileLocationWithMetadataWithStatuses() {
-        List<FileLocation> allFileLocations = fileLocationService.findAll();
+    public Page<FileLocationGetResponse> getAllFileLocationWithMetadataWithStatusesPageable(Pageable pageable) {
+        Page<FileLocation> page = fileLocationService.findAll(pageable);
+        List<FileLocation> allFileLocations = page.get().collect(Collectors.toList());
         Map<FileLocation, FileMetadata> locationMetadata = fileMetadataService.findByLocationsAndRelevant(allFileLocations);
         Map<FileLocation, List<FileStatus>> locationStatuses = fileStatusService.findAllByFileLocations(allFileLocations);
 
-        return allFileLocations.stream().map(location -> {
+        List<FileLocationGetResponse> content = allFileLocations.stream().map(location -> {
             FileStatus fileStatus = locationStatuses.get(location).stream()
                     .max(Comparator.comparing(FileStatus::getCreatedAt)).stream().findFirst()
                     .orElseThrow(() -> new RuntimeException("Unable to get the latest status"));
@@ -232,6 +236,11 @@ public class FileLocationManagerImpl implements FileLocationManager {
                                     .build()
                     ).build();
         }).collect(Collectors.toList());
+        return new PageImpl<>(
+                content,
+                pageable,
+                page.getTotalElements()
+        );
     }
 
     //Todo probably wrong approach. Need to be carried out in 2 steps like creation

@@ -6,6 +6,8 @@ import com.filestorage.adapter.dto.request.FileLocationCreateRequest;
 import com.filestorage.adapter.dto.response.FileLocationGetResponse;
 import com.filestorage.domain.entity.FileLocation;
 import com.filestorage.grpc.GrpcFileAccessSaveRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.UUID;
@@ -20,7 +22,7 @@ public interface FileLocationManager {
     FileLocation afterSave(FileAccessSaveRequest request);
     FileLocation afterSave(GrpcFileAccessSaveRequest request);
     FileMetadataDTO getFileLocationWithMetadata(UUID id);
-    List<FileLocationGetResponse> getAllFileLocationWithMetadataWithStatuses();
+    Page<FileLocationGetResponse> getAllFileLocationWithMetadataWithStatusesPageable(Pageable pageable);
     FileLocation beforeUpdate(FileAccessSaveRequest request);
     FileLocation beforeDelete(UUID id);
     FileLocation afterDelete(UUID id);
