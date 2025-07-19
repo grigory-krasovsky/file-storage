@@ -11,7 +11,10 @@ import com.filestorage.core.exception.FileUploadException;
 import com.filestorage.core.exception.enums.ErrorType;
 import com.filestorage.core.service.FileAccessManager;
 import com.filestorage.core.service.FileLocationManager;
+import com.filestorage.core.service.FileLocationService;
+import com.filestorage.core.service.FileMetadataService;
 import com.filestorage.domain.entity.FileLocation;
+import com.filestorage.domain.entity.FileMetadata;
 import com.filestorage.grpc.GrpcFileAccessSaveRequest;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -21,26 +24,28 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.nio.file.DirectoryNotEmptyException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.filestorage.core.exception.FileAccessException.*;
 import static com.filestorage.core.exception.FileUploadException.UNABLE_TO_CREATE_DIRECTORY;
 import static com.filestorage.core.exception.FileUploadException.UNABLE_TO_CREATE_FILE;
+import static com.filestorage.domain.enums.ContentType.IMG_JPG;
 
 @Service
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class FileAccessManagerImpl implements FileAccessManager {
     FileLocationManager fileLocationManager;
+    FileLocationService fileLocationService;
+    FileMetadataService fileMetadataService;
 
     @Override
     @Transactional
@@ -97,6 +102,27 @@ public class FileAccessManagerImpl implements FileAccessManager {
 
         } catch (MalformedURLException e) {
             throw new FileAccessException(ErrorType.SYSTEM_ERROR, MALFORMED_PATH(filePath.toString()));
+        }
+    }
+
+    @Override
+    public Optional<byte[]> getPreview(UUID parentUuid) {
+        List<FileLocation> potentialPreviews = fileLocationService.getPotentialPreviews(parentUuid);
+        Optional<FileMetadata> previewMetadata = fileMetadataService.findByLocationsAndRelevant(potentialPreviews)
+                .entrySet().stream().filter(entry -> Objects.equals(entry.getValue().getContentType(), IMG_JPG.getRepresentation()))
+                .min(Comparator.comparingInt(entry -> entry.getValue().getSize()))
+                .stream().findFirst().map(Map.Entry::getValue);
+        if (previewMetadata.isEmpty()) {
+            return Optional.empty();
+        }
+        FileAccessGetResponse response = getFileAccess(FileAccessGetRequest.builder()
+                .id(previewMetadata.get().getFileLocation().getId())
+                .build());
+
+        try (InputStream inputStream = response.getResource().getInputStream()) {
+            return Optional.of(inputStream.readAllBytes());
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to read resource content", e);
         }
     }
 

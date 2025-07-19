@@ -6,6 +6,7 @@ import com.filestorage.adapter.dto.request.FileAccessSaveRequest;
 import com.filestorage.adapter.dto.request.FileAccessGetRequest;
 import com.filestorage.adapter.dto.response.FileAccessGetResponse;
 import com.filestorage.core.service.FileAccessManager;
+import com.filestorage.core.service.FileLocationManager;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.Delegate;
@@ -60,6 +61,15 @@ public class FileAccessController extends AbstractController {
                 .header(HttpHeaders.CONTENT_DISPOSITION,
                         String.format("attachment; filename=\"%s\"", fileAccess.getFileName()))
                 .body(fileAccess.getResource());
+    }
+
+    @GetMapping(value = "/preview/{parent}", produces = MediaType.IMAGE_JPEG_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<byte[]> getPreview(@PathVariable UUID parent) {
+        return fileAccessManager.getPreview(parent)
+                .map(ResponseEntity::ok).orElse(
+                ResponseEntity.notFound().build()
+        );
     }
 
 

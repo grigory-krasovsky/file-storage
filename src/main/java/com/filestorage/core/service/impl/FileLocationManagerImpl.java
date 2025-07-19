@@ -5,16 +5,15 @@ import com.filestorage.adapter.dto.FileMetadataDTO;
 import com.filestorage.adapter.dto.converter.FileLocationConverter;
 import com.filestorage.adapter.dto.converter.FileMetadataConverter;
 import com.filestorage.adapter.dto.converter.FileStatusConverter;
+import com.filestorage.adapter.dto.request.FileAccessGetRequest;
 import com.filestorage.adapter.dto.request.FileAccessSaveRequest;
 import com.filestorage.adapter.dto.request.FileLocationCreateRequest;
+import com.filestorage.adapter.dto.response.FileAccessGetResponse;
 import com.filestorage.adapter.dto.response.FileLocationGetResponse;
 import com.filestorage.core.exception.DataBaseException;
 import com.filestorage.core.exception.FileUploadException;
 import com.filestorage.core.exception.enums.ErrorType;
-import com.filestorage.core.service.FileLocationManager;
-import com.filestorage.core.service.FileLocationService;
-import com.filestorage.core.service.FileMetadataService;
-import com.filestorage.core.service.FileStatusService;
+import com.filestorage.core.service.*;
 import com.filestorage.core.utils.CommonUtils;
 import com.filestorage.core.utils.FileAccessUtils;
 import com.filestorage.domain.entity.FileLocation;
@@ -211,7 +210,7 @@ public class FileLocationManagerImpl implements FileLocationManager {
 
     @Override
     public Page<FileLocationGetResponse> getAllFileLocationWithMetadataWithStatusesPageable(Pageable pageable) {
-        Page<FileLocation> page = fileLocationService.findAll(pageable);
+        Page<FileLocation> page = fileLocationService.findAllByParentIsNull(pageable);
         List<FileLocation> allFileLocations = page.get().collect(Collectors.toList());
         Map<FileLocation, FileMetadata> locationMetadata = fileMetadataService.findByLocationsAndRelevant(allFileLocations);
         Map<FileLocation, List<FileStatus>> locationStatuses = fileStatusService.findAllByFileLocations(allFileLocations);

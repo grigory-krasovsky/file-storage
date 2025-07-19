@@ -8,6 +8,7 @@ import com.filestorage.adapter.dto.response.FileAccessGetResponse;
 import com.filestorage.grpc.GrpcFileAccessSaveRequest;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface FileAccessManager {
@@ -17,4 +18,5 @@ public interface FileAccessManager {
     FileAccessGetResponse getFileAccess(FileAccessGetRequest request);
     Boolean deleteFileAccess(UUID id);
     List<UUID> deleteFileAccess(FileAccessBatchDeleteRequest request);
+    Optional<byte[]> getPreview(UUID parentUuid);
 }
