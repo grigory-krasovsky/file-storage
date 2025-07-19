@@ -1,0 +1,1 @@
+ALTER TABLE file_location ADD COLUMN parent UUID;

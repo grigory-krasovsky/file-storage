@@ -15,6 +15,7 @@ public class FileLocationConverter implements Converter<FileLocation, FileLocati
                 .filePath(fileLocationDTO.getFilePath())
                 .id(fileLocationDTO.getId())
                 .createdAt(fileLocationDTO.getCreatedAt())
+                .parent(fileLocationDTO.getParent())
                 .build();
     }
 
@@ -23,6 +24,7 @@ public class FileLocationConverter implements Converter<FileLocation, FileLocati
         return FileLocationDTO.builder()
                 .id(fileLocation.getId())
                 .createdAt(fileLocation.getCreatedAt())
+                .parent(fileLocation.getParent())
                 .filePath(fileLocation.getFilePath())
                 .build();
     }

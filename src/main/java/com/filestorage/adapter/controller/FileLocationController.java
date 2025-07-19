@@ -28,10 +28,10 @@ public class FileLocationController extends AbstractController {
 
     @GetMapping
     public Page<FileLocationGetResponse> getAllFiles(@RequestParam Integer pageSize, @RequestParam Integer pageNumber) {
-//        Random r = new Random();
-//        if (r.nextInt() % 2 == 0) {
-//            throw new RuntimeException("");
-//        }
+        Random r = new Random();
+        if (r.nextInt() % 2 == 0) {
+            throw new RuntimeException("");
+        }
         return fileLocationManager.getAllFileLocationWithMetadataWithStatusesPageable(Pageable.ofSize(pageSize).withPage(pageNumber));
     }
 }

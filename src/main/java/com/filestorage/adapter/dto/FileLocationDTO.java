@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -15,4 +16,5 @@ import java.time.OffsetDateTime;
 @AllArgsConstructor
 public class FileLocationDTO extends AbstractDTO {
     private String filePath;
+    private UUID parent;
 }

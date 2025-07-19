@@ -5,6 +5,8 @@ import jakarta.persistence.Table;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.UUID;
+
 @Entity
 @Getter
 @Setter
@@ -13,4 +15,5 @@ import lombok.experimental.SuperBuilder;
 @Table(name = "file_location")
 public class FileLocation extends AbstractEntity {
     String filePath;
+    UUID parent;
 }

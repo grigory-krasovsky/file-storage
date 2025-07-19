@@ -66,6 +66,7 @@ public class FileLocationManagerImpl implements FileLocationManager {
 
         FileLocationDTO fileLocationDTO = FileLocationDTO.builder()
                 .filePath("")
+                .parent(request.getMainFileLocationUuid())
                 .build();
 
         FileLocation savedFileLocation = fileLocationService.create(fileLocationConverter.toEntity(fileLocationDTO));
